@@ -654,7 +654,10 @@ select, select:hover, select:focus {
   margin-top: 4px;
 }
 
+.mobile-br { display: none; }
+
 @media (max-width: 768px) {
+  .mobile-br { display: inline; }
   .brief-top-bar { flex-direction: column; gap: 12px; text-align: center; }
   .brief-top-title { font-size: 15px; }
 }
@@ -2128,7 +2131,7 @@ footer a {
       </div>
 
       <div class="brief-toggle-bar">
-        <span style="margin-right:auto;font-size:13px;font-weight:600;color:var(--accent-primary);letter-spacing:0.3px;">Your brief is ready — expand any section to explore</span>
+        <span style="margin-right:auto;font-size:13px;font-weight:600;color:var(--accent-primary);letter-spacing:0.3px;">Your brief is ready —<br class="mobile-br"> expand any section to explore</span>
         <button onclick="toggleAllSections(true)">Expand All</button>
         <button onclick="toggleAllSections(false)">Collapse All</button>
       </div>
@@ -3466,7 +3469,7 @@ function initDashboard() {
       datasets: [
         { label: 'Financial Services', data: [85, 72, 68, 30, 78], backgroundColor: '#D4922A' },
         { label: 'Healthcare', data: [70, 45, 55, 60, 92], backgroundColor: '#00B894' },
-        { label: 'Manufacturing', data: [55, 88, 50, 95, 65], backgroundColor: '#F39C12' },
+        { label: 'Manufacturing', data: [55, 88, 50, 95, 65], backgroundColor: '#3498DB' },
         { label: 'Tech', data: [40, 65, 90, 25, 50], backgroundColor: '#9B59B6' }
       ]
     },
