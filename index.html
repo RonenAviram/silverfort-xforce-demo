@@ -1680,6 +1680,8 @@ footer a {
   .slide-card { padding: 24px; min-height: auto; }
   .carousel-slide { padding: 0; }
   .funnel-step { font-size: 11px; height: auto; padding: 8px 6px; min-width: 180px; text-align: center; }
+  .carousel-nav { margin-top: 8px; }
+  .carousel-wrapper { transition: height 0.4s ease; }
   .section-title { font-size: 24px; }
   .showcase-inner { grid-template-columns: 1fr !important; gap: 24px; }
   .showcase-card { padding: 16px 20px; }
@@ -3068,17 +3070,33 @@ function initCarousel() {
     dot.onclick = () => goToSlide(i);
     dotsContainer.appendChild(dot);
   }
+  // Set initial wrapper height on mobile
+  if (window.innerWidth <= 768) {
+    const track = document.getElementById('carouselTrack');
+    const wrapper = track.parentElement;
+    const firstSlide = track.querySelector('.carousel-slide');
+    if (firstSlide) wrapper.style.height = firstSlide.scrollHeight + 'px';
+  }
 }
 
 function goToSlide(index) {
   currentSlide = index;
-  document.getElementById('carouselTrack').style.transform = `translateX(-${index * 100}%)`;
+  const track = document.getElementById('carouselTrack');
+  track.style.transform = `translateX(-${index * 100}%)`;
   document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
     dot.className = 'carousel-dot' + (i === index ? ' active' : '');
   });
   document.querySelectorAll('.carousel-tab').forEach((tab, i) => {
     tab.className = 'carousel-tab' + (i === index ? ' active' : '');
   });
+  // Match wrapper height to active slide on mobile
+  if (window.innerWidth <= 768) {
+    const slides = track.querySelectorAll('.carousel-slide');
+    const wrapper = track.parentElement;
+    if (slides[index]) {
+      wrapper.style.height = slides[index].scrollHeight + 'px';
+    }
+  }
 }
 
 function moveCarousel(dir) {
