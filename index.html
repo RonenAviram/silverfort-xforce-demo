@@ -1,0 +1,3482 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sales Intelligence - Know Before You Go | Ronen Aviram × SilverFort X-Force</title>
+<link rel="icon" href="https://www.silverfort.com/wp-content/uploads/2025/02/cropped-Silverfort-Symbol-Pos-RGB.png">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<style>
+/* ═══════════════════════════════════════════════
+   DESIGN SYSTEM
+   ═══════════════════════════════════════════════ */
+:root {
+  --bg-primary: #000000;
+  --bg-surface: #111111;
+  --bg-surface-hover: #1a1a1a;
+  --bg-elevated: #1c1c1c;
+  --accent-primary: #D4922A;
+  --accent-primary-hover: #E5A33B;
+  --accent-gold: #D4922A;
+  --accent-amber: #E8A838;
+  --accent-secondary: #E8C068;
+  --accent-success: #00B894;
+  --accent-warning: #F39C12;
+  --accent-danger: #E74C3C;
+  --text-primary: #FFFFFF;
+  --text-secondary: #999999;
+  --text-muted: #666666;
+  --border: #222222;
+  --border-light: #333333;
+  --radius: 12px;
+  --radius-sm: 8px;
+  --radius-xs: 6px;
+  --shadow: 0 4px 24px rgba(0,0,0,0.5);
+  --shadow-lg: 0 8px 40px rgba(0,0,0,0.6);
+  --transition: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', -apple-system, sans-serif;
+  background: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: var(--bg-primary); }
+::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 3px; }
+
+/* ═══════════════════════════════════════════════
+   LAYOUT
+   ═══════════════════════════════════════════════ */
+.container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+section {
+  padding: 80px 0;
+  border-bottom: 1px solid var(--border);
+}
+
+.section-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--accent-primary);
+  margin-bottom: 12px;
+}
+
+.section-label::before {
+  content: '';
+  width: 20px;
+  height: 2px;
+  background: var(--accent-primary);
+}
+
+.section-title {
+  font-size: 32px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.section-subtitle {
+  font-size: 16px;
+  color: var(--text-secondary);
+  margin-bottom: 40px;
+}
+
+/* ═══════════════════════════════════════════════
+   HEADER
+   ═══════════════════════════════════════════════ */
+#header {
+  padding: 48px 0 40px;
+  border-bottom: none;
+  position: relative;
+  background: linear-gradient(135deg, #D4922A 0%, #E8C068 40%, #F0D890 70%, #E8C878 100%);
+  color: #000;
+}
+
+.header-content {
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+.header-logo {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  margin-top: 4px;
+}
+
+.header-text h1 {
+  font-size: 28px;
+  font-weight: 700;
+  line-height: 1.2;
+  color: #000;
+}
+
+.header-text h1 span {
+  color: #000;
+}
+
+.header-meta {
+  font-size: 12px;
+  color: #666;
+  text-align: right;
+  margin-bottom: 8px;
+  letter-spacing: 0.3px;
+}
+
+.header-tagline {
+  font-size: 15px;
+  color: #222;
+  margin-top: 16px;
+  padding: 16px 20px;
+  background: rgba(0,0,0,0.08);
+  border-left: 3px solid #000;
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  font-style: italic;
+  max-width: 800px;
+}
+
+.simulated-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 6px 12px;
+  background: rgba(0,0,0,0.1);
+  border: 1px solid rgba(0,0,0,0.2);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #333;
+  letter-spacing: 0.5px;
+}
+
+/* ═══════════════════════════════════════════════
+   CAROUSEL
+   ═══════════════════════════════════════════════ */
+
+.carousel-tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid var(--border);
+  padding-bottom: 0;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+}
+
+.carousel-tab {
+  flex: 1;
+  padding: 10px 12px;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  color: var(--text-muted);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.carousel-tab:hover {
+  color: var(--text-secondary);
+}
+
+.carousel-tab.active {
+  color: var(--accent-primary);
+  border-bottom-color: var(--accent-primary);
+  font-weight: 600;
+}
+
+.carousel-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.carousel-slide {
+  min-width: 100%;
+  padding: 0 40px;
+}
+
+.slide-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 48px;
+  min-height: 360px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.slide-number {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  letter-spacing: 2px;
+  margin-bottom: 16px;
+}
+
+.slide-card h3 {
+  font-size: 26px;
+  font-weight: 700;
+  margin-bottom: 16px;
+  line-height: 1.3;
+}
+
+.slide-card p {
+  font-size: 16px;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  max-width: 700px;
+}
+
+.slide-visual {
+  margin-top: 24px;
+}
+
+/* Funnel visual for slide 2 */
+.funnel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  margin-top: 20px;
+}
+
+.funnel-step {
+  height: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: var(--radius-xs);
+  font-size: 13px;
+  font-weight: 500;
+  color: #fff;
+  transition: var(--transition);
+}
+
+/* Three problems visual */
+.three-problems {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-top: 20px;
+}
+
+.problem-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  text-align: center;
+}
+
+.problem-card .icon { font-size: 28px; margin-bottom: 8px; }
+.problem-card h4 { font-size: 14px; font-weight: 600; margin-bottom: 4px; }
+.problem-card p { font-size: 12px; color: var(--text-secondary); }
+
+/* Timeline visual */
+.timeline {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.timeline-step {
+  position: relative;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+}
+
+.timeline-step::after {
+  content: '→';
+  position: absolute;
+  right: -14px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--accent-primary);
+  font-size: 16px;
+}
+
+.timeline-step:last-child::after { display: none; }
+
+.timeline-step .week {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  margin-bottom: 4px;
+}
+
+.timeline-step h4 { font-size: 13px; font-weight: 600; }
+.timeline-step p { font-size: 11px; color: var(--text-secondary); margin-top: 4px; }
+
+/* Metrics grid */
+.metrics-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  margin-top: 20px;
+}
+
+.metric-item {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  text-align: center;
+}
+
+.metric-item .value {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--accent-success);
+}
+
+.metric-item .label {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* Carousel nav */
+.carousel-nav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  margin-top: 24px;
+}
+
+.carousel-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: var(--transition);
+  font-size: 18px;
+}
+
+.carousel-btn:hover {
+  background: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+
+.carousel-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.carousel-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--border-light);
+  cursor: pointer;
+  transition: var(--transition);
+  border: none;
+}
+
+.carousel-dot.active {
+  background: var(--accent-primary);
+  width: 24px;
+  border-radius: 4px;
+}
+
+/* ═══════════════════════════════════════════════
+   AE VIEW - MEETING PREP
+   ═══════════════════════════════════════════════ */
+.input-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-group label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.form-group select,
+.form-group input {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  transition: var(--transition);
+  outline: none;
+}
+
+.form-group select:focus,
+.form-group input:focus {
+  border-color: var(--accent-primary);
+  box-shadow: 0 0 0 3px rgba(212, 146, 42, 0.15);
+}
+
+.form-group select option {
+  background: var(--bg-surface);
+}
+
+.generate-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 16px 36px;
+  background: #D4922A;
+  color: #1a1000;
+  border: none;
+  border-radius: 28px;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: var(--transition);
+  letter-spacing: 0.3px;
+}
+
+.generate-btn:hover {
+  background: var(--accent-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 16px rgba(212, 146, 42, 0.3);
+}
+
+/* Enrichment animation */
+.enrichment-bar {
+  display: none;
+  margin: 24px 0;
+  padding: 20px 24px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+}
+
+.enrichment-bar.active { display: block; }
+
+.enrichment-sources {
+  display: flex;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.enrichment-source {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 14px;
+  background: var(--bg-elevated);
+  border-radius: 20px;
+  font-size: 13px;
+  opacity: 0.3;
+  transition: opacity 0.4s ease;
+}
+
+.enrichment-source.loaded {
+  opacity: 1;
+}
+
+.enrichment-source .check {
+  color: var(--accent-success);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.enrichment-source.loaded .check {
+  opacity: 1;
+}
+
+.enrichment-source .source-name {
+  font-size: 12px;
+}
+
+.enrichment-source svg {
+  flex-shrink: 0;
+}
+
+.enrichment-source:not(.loaded) svg {
+  animation: spin 1.2s linear infinite;
+}
+
+@keyframes spin {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+/* Pointer cursor for all clickable elements */
+button, .generate-btn, .confirm-btn, select, select option, .carousel-btn, .agenda-tab, .brief-section h4, a, [onclick] {
+  cursor: pointer;
+}
+
+.h1-subtitle {
+  display: block;
+  font-size: 0.65em;
+  font-weight: 600;
+  color: var(--accent-primary);
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+select, select:hover, select:focus {
+  cursor: pointer !important;
+}
+
+
+
+.download-bar {
+  display: flex;
+  justify-content: center;
+  padding: 20px;
+  margin: 16px 0;
+}
+
+.download-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 32px;
+  background: linear-gradient(135deg, var(--accent-primary), var(--accent-secondary));
+  color: #000;
+  border: 2px solid var(--accent-primary);
+  border-radius: var(--radius);
+  font-size: 15px;
+  font-weight: 700;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 4px 16px rgba(212,146,42,0.25);
+  letter-spacing: 0.3px;
+}
+
+.download-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(212,146,42,0.3);
+}
+
+
+
+.h1-subtitle {
+  display: block;
+  font-size: 0.65em;
+  font-weight: 600;
+  color: var(--accent-primary);
+  margin-top: 6px;
+  letter-spacing: 1px;
+}
+
+select, select:hover, select:focus {
+  cursor: pointer !important;
+}
+.skip-to-demo {
+  display: inline-block;
+  margin-top: 12px;
+  margin-bottom: 24px;
+  padding: 8px 20px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  border: 1px solid var(--accent-primary);
+  border-radius: 20px;
+  text-decoration: none;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  opacity: 0.7;
+}
+
+.skip-to-demo:hover {
+  background: var(--accent-primary);
+  color: #000;
+  opacity: 1;
+}
+/* Brief output */
+
+.brief-top-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 24px;
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 20px;
+}
+
+.brief-top-title {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-primary);
+}
+
+.brief-top-meta {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+@media (max-width: 768px) {
+  .brief-top-bar { flex-direction: column; gap: 12px; text-align: center; }
+  .brief-top-title { font-size: 15px; }
+}
+
+.brief-toggle-bar {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.brief-toggle-bar button {
+  background: transparent;
+  border: 1px solid var(--border-light);
+  color: var(--text-secondary);
+  padding: 6px 14px;
+  border-radius: var(--radius-xs);
+  font-size: 12px;
+  font-weight: 600;
+  font-family: 'Inter', sans-serif;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.brief-toggle-bar button:hover {
+  color: var(--accent-primary);
+  border-color: var(--accent-primary);
+}
+.brief-output {
+  display: none;
+}
+
+.brief-output.visible {
+  display: block;
+  animation: fadeIn 0.5s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* Review bar */
+.review-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  background: rgba(212, 146, 42, 0.08);
+  border: 1px solid rgba(212, 146, 42, 0.2);
+  border-radius: var(--radius-sm);
+  margin-bottom: 24px;
+}
+
+.review-bar p {
+  font-size: 14px;
+  color: var(--text-secondary);
+}
+
+.confirm-btn {
+  padding: 10px 24px;
+  background: var(--accent-success);
+  color: #fff;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.confirm-btn:hover {
+  background: #00d4a8;
+  transform: translateY(-1px);
+}
+
+/* Brief sections */
+.brief-section {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  margin-bottom: 16px;
+  overflow: hidden;
+}
+
+.brief-section-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px;
+  cursor: pointer;
+  transition: background var(--transition);
+}
+
+.brief-section-header:hover {
+  background: var(--bg-surface-hover);
+}
+
+.brief-section-header h4 {
+  font-size: 15px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brief-section-header .toggle {
+  font-size: 18px;
+  color: var(--text-muted);
+  transition: transform var(--transition);
+}
+
+.brief-section.open .toggle {
+  transform: rotate(180deg);
+}
+
+.brief-section-body {
+  padding: 0 24px 20px;
+  display: none;
+}
+
+.brief-section.open .brief-section-body {
+  display: block;
+}
+
+/* Source tags */
+.source-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 3px 10px;
+  background: var(--bg-elevated);
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--text-secondary);
+  margin: 2px;
+}
+
+/* Account snapshot */
+.snapshot-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.snapshot-item {
+  padding: 12px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-xs);
+}
+
+.snapshot-item .label {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.snapshot-item .value {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.identity-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin: 12px 0;
+}
+
+.identity-tag {
+  padding: 6px 12px;
+  background: rgba(212, 146, 42, 0.1);
+  border: 1px solid rgba(212, 146, 42, 0.25);
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--accent-amber);
+}
+
+.identity-tag.legacy {
+  background: rgba(243, 156, 18, 0.1);
+  border-color: rgba(243, 156, 18, 0.2);
+  color: var(--accent-warning);
+}
+
+/* Stakeholder row */
+.stakeholders {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.stakeholder {
+  padding: 12px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-xs);
+}
+
+.stakeholder .role {
+  font-size: 11px;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.stakeholder .name {
+  font-size: 14px;
+  font-weight: 600;
+  margin-top: 2px;
+}
+
+.stakeholder .title {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+
+/* Use case cards */
+.use-case-cards {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.use-case-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  position: relative;
+}
+
+.use-case-card .rank {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  background: var(--accent-gold);
+  color: #000;
+  font-size: 12px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.use-case-card h5 {
+  font-size: 14px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  padding-right: 30px;
+}
+
+.use-case-card .relevance {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.use-case-card .proof {
+  font-size: 12px;
+  color: var(--accent-success);
+  padding: 8px 12px;
+  background: rgba(0, 184, 148, 0.08);
+  border-radius: var(--radius-xs);
+  margin-bottom: 10px;
+}
+
+.use-case-card .one-liner {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+  border-top: 1px solid var(--border);
+  padding-top: 10px;
+}
+
+/* Competitive table */
+.table-scroll-wrapper {
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  margin: 16px 0;
+}
+.comp-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 400px;
+}
+
+.comp-table th {
+  text-align: left;
+  padding: 10px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+}
+
+.comp-table td {
+  padding: 12px 16px;
+  font-size: 13px;
+  border-bottom: 1px solid var(--border);
+}
+
+.comp-table tr:last-child td { border-bottom: none; }
+
+.comp-highlight {
+  background: rgba(0, 184, 148, 0.08);
+}
+
+.comp-table .win { color: var(--accent-success); font-weight: 600; }
+.comp-table .lose { color: var(--accent-danger); }
+
+/* Objection cards */
+.objection-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 20px;
+  margin-bottom: 12px;
+}
+
+.objection-card .objection-text {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--accent-warning);
+  margin-bottom: 8px;
+}
+
+.objection-card .why {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+
+.objection-card .framework {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
+}
+
+.objection-card .response {
+  font-size: 13px;
+  color: var(--text-primary);
+  padding: 12px;
+  background: rgba(212, 146, 42, 0.06);
+  border-radius: var(--radius-xs);
+  line-height: 1.7;
+}
+
+/* Agenda */
+.agenda-tabs {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.agenda-tab {
+  padding: 8px 16px;
+  border-radius: 20px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  cursor: pointer;
+  transition: var(--transition);
+}
+
+.agenda-tab.active {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: #000;
+}
+
+.agenda-items {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.agenda-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-xs);
+}
+
+.agenda-item .time {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--accent-primary);
+  min-width: 48px;
+}
+
+.agenda-item .topic {
+  font-size: 13px;
+}
+
+/* Actions bar */
+.actions-bar {
+  display: flex;
+  gap: 12px;
+  margin-top: 24px;
+}
+
+.action-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border-radius: var(--radius-sm);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: var(--transition);
+  border: 1px solid var(--border);
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.action-btn:hover {
+  border-color: var(--accent-primary);
+  background: var(--bg-surface-hover);
+}
+
+.action-btn.primary {
+  background: var(--accent-gold);
+  border-color: var(--accent-gold);
+  color: #000;
+}
+
+.action-btn.primary:hover {
+  background: var(--accent-primary-hover);
+  color: #000;
+}
+
+/* Feedback loop */
+.feedback-section {
+  display: none;
+  margin-top: 32px;
+  padding: 28px;
+  background: linear-gradient(135deg, rgba(212,146,42,0.06), rgba(212,146,42,0.02));
+  border: 1px solid rgba(212,146,42,0.25);
+  border-radius: var(--radius);
+  position: relative;
+}
+
+.feedback-section.visible { display: block; }
+
+.feedback-section h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 4px;
+  color: var(--accent-primary);
+}
+
+.feedback-section .feedback-sub {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 8px;
+}
+
+.feedback-incentive {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-bottom: 20px;
+  padding: 10px 14px;
+  background: var(--bg-elevated);
+  border-radius: var(--radius-xs);
+  border-left: 3px solid var(--accent-primary);
+  line-height: 1.5;
+}
+
+.feedback-form {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+.feedback-form .full-width {
+  grid-column: 1 / -1;
+}
+
+.feedback-form textarea {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 16px;
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+  font-size: 14px;
+  resize: vertical;
+  outline: none;
+  min-height: 60px;
+}
+
+.feedback-form textarea:focus {
+  border-color: var(--accent-primary);
+}
+
+/* ═══════════════════════════════════════════════
+   DASHBOARD - MANAGEMENT VIEW
+   ═══════════════════════════════════════════════ */
+.kpi-row {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.kpi-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.kpi-card .kpi-label {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  margin-bottom: 8px;
+}
+
+.kpi-card .kpi-value {
+  font-size: 32px;
+  font-weight: 800;
+  line-height: 1;
+}
+
+.kpi-card .kpi-change {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 8px;
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--accent-success);
+}
+
+.kpi-card .kpi-note {
+  font-size: 12px;
+  color: var(--text-muted);
+  margin-top: 4px;
+}
+
+/* Dashboard charts */
+.dashboard-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  margin-bottom: 40px;
+}
+
+.chart-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+}
+
+.chart-card h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.chart-card canvas {
+  max-height: 280px;
+}
+
+/* Heatmap */
+.heatmap-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin-bottom: 40px;
+}
+
+.heatmap-card h4 {
+  font-size: 15px;
+  font-weight: 600;
+  margin-bottom: 20px;
+}
+
+.heatmap-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.heatmap-table th {
+  padding: 8px 12px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  text-align: center;
+}
+
+.heatmap-table th:first-child {
+  text-align: left;
+}
+
+.heatmap-table td {
+  padding: 8px 12px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.heatmap-table td:first-child {
+  text-align: left;
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+.heatmap-cell {
+  display: inline-block;
+  width: 48px;
+  height: 32px;
+  border-radius: 4px;
+  line-height: 32px;
+  font-size: 12px;
+  font-weight: 600;
+}
+
+/* ROI Summary */
+.roi-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.roi-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  text-align: center;
+}
+
+.roi-card .roi-value {
+  font-size: 28px;
+  font-weight: 800;
+  color: var(--accent-success);
+}
+
+.roi-card .roi-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+/* ═══════════════════════════════════════════════
+   FOOTER
+   ═══════════════════════════════════════════════ */
+
+/* Technical details */
+.tech-details {
+  margin: 48px 0 0;
+}
+.tech-details summary {
+  font-size: 15px;
+  font-weight: 600;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 16px 0;
+  border-top: 1px solid var(--border);
+  list-style: none;
+}
+.tech-details summary::-webkit-details-marker { display: none; }
+.tech-details summary::before {
+  content: '\25B6';
+  display: inline-block;
+  margin-right: 10px;
+  font-size: 11px;
+  transition: transform 0.2s;
+}
+.tech-details[open] summary::before {
+  transform: rotate(90deg);
+}
+.tech-inner {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px;
+  margin-top: 8px;
+}
+.tech-inner h4 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.tech-inner .tech-sub {
+  font-size: 14px;
+  color: var(--text-secondary);
+  margin-bottom: 24px;
+}
+.tech-tree {
+  font-family: 'Courier New', monospace;
+  font-size: 13px;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  white-space: pre-wrap;
+}
+.tech-tree .dir { color: var(--text-primary); font-weight: 700; }
+.tech-tree .file { color: var(--accent-primary); font-weight: 700; }
+.tech-tree .desc { color: var(--text-muted); font-style: italic; }
+.tech-stats {
+  display: flex;
+  gap: 32px;
+  flex-wrap: wrap;
+  margin-top: 24px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
+}
+.tech-stats .stat {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.tech-stats .stat-num {
+  font-size: 20px;
+  font-weight: 800;
+  color: var(--text-primary);
+}
+.tech-stats .stat-label {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+footer {
+  padding: 40px 0;
+  text-align: center;
+  border-top: 1px solid var(--border);
+}
+
+footer p {
+  font-size: 14px;
+  color: var(--text-muted);
+}
+
+footer a {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+
+/* ═══════════════════════════════════════════════
+   RESPONSIVE
+   ═══════════════════════════════════════════════ */
+@media (max-width: 768px) {
+  .carousel-tabs { gap: 2px; }
+  .carousel-tab { font-size: 11px; padding: 8px 8px; }
+
+  .h1-subtitle { font-size: 0.6em; }
+  .skip-to-demo { margin-bottom: 16px; font-size: 11px; padding: 6px 14px; }
+
+  .container { padding: 0 16px; }
+  section { padding: 48px 0; }
+  .header-split { grid-template-columns: 1fr; gap: 24px; }
+  .header-network { order: -1; }
+  .header-network svg { max-width: 280px; max-height: 200px; margin: 0 auto; }
+  #header { padding: 32px 0 24px; }
+  .header-text h1 { font-size: 22px; }
+  .header-tagline { font-size: 13px; padding: 12px 16px; }
+  .input-form { grid-template-columns: 1fr; }
+  .snapshot-grid { grid-template-columns: 1fr 1fr; }
+  .use-case-cards { grid-template-columns: 1fr; }
+  .stakeholders { grid-template-columns: 1fr; }
+  .three-problems { grid-template-columns: 1fr; }
+  .timeline { grid-template-columns: 1fr 1fr; }
+  .metrics-grid { grid-template-columns: 1fr 1fr; }
+  .kpi-row { grid-template-columns: 1fr 1fr !important; }
+  .dashboard-grid { grid-template-columns: 1fr; }
+  .roi-grid { grid-template-columns: 1fr 1fr; }
+  .feedback-form { grid-template-columns: 1fr; }
+  .slide-card { padding: 24px; min-height: auto; }
+  .carousel-slide { padding: 0; }
+  .section-title { font-size: 24px; }
+  .showcase-inner { grid-template-columns: 1fr; }
+  .showcase-card { padding: 16px 20px; }
+  .comp-table { font-size: 12px; }
+  .comp-table th, .comp-table td { padding: 8px; }
+  .strategy-banner { padding: 12px 16px; flex-direction: column; gap: 4px; }
+  .review-bar { flex-direction: column; text-align: center; gap: 12px; }
+  .tech-inner { padding: 20px 16px; }
+  .tech-tree { font-size: 11px; }
+  .tech-stats { gap: 16px; }
+  .tech-stats .stat-num { font-size: 16px; }
+  .enrichment-sources { gap: 8px; }
+  .enrichment-source { padding: 6px 10px; font-size: 12px; }
+  .heatmap-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .brief-section { padding: 16px; }
+  .brief-section-header h3 { font-size: 14px; }
+  .kpi-card { padding: 16px; }
+  .kpi-card .kpi-value { font-size: 24px; }
+  .roi-card { padding: 16px; }
+  .roi-card .roi-value { font-size: 22px; }
+}
+
+@media (max-width: 480px) {
+  .header-text h1 { font-size: 18px; }
+  .header-network svg { max-width: 220px; max-height: 160px; }
+  .snapshot-grid { grid-template-columns: 1fr; }
+  .kpi-row { grid-template-columns: 1fr !important; }
+  .metrics-grid { grid-template-columns: 1fr; }
+  .roi-grid { grid-template-columns: 1fr; }
+  .timeline { grid-template-columns: 1fr; }
+  .timeline-step::after { display: none; }
+  .slide-card h3 { font-size: 20px; }
+  .section-title { font-size: 20px; }
+  .carousel-tab { font-size: 10px; padding: 6px 4px; }
+  .enrichment-source .source-name { font-size: 11px; }
+  .comp-table th, .comp-table td { padding: 6px 4px; font-size: 11px; }
+  .tech-tree { font-size: 10px; }
+  .stakeholders { gap: 8px; }
+  .three-problems { gap: 8px; }
+  .problem-card { padding: 14px; }
+}
+
+/* Confirmed state */
+.confirmed-banner {
+  display: none;
+  padding: 16px 24px;
+  background: rgba(0, 184, 148, 0.1);
+  border: 1px solid rgba(0, 184, 148, 0.3);
+  border-radius: var(--radius-sm);
+  color: var(--accent-success);
+  font-weight: 600;
+  font-size: 15px;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+
+.confirmed-banner.visible {
+  display: flex;
+}
+
+/* ═══════════════════════════════════════════════
+   HEADER LAYOUT - TWO COLUMNS
+   ═══════════════════════════════════════════════ */
+.header-split {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  align-items: center;
+}
+
+.header-left {
+  display: flex;
+  flex-direction: column;
+}
+
+.header-network {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.header-network svg {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+}
+
+/* Scroll CTA animation */
+.scroll-cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 14px;
+  color: var(--accent-primary);
+  font-weight: 600;
+  text-decoration: none;
+  cursor: pointer;
+  transition: var(--transition);
+  margin-top: 8px;
+}
+.scroll-cta:hover { color: var(--accent-primary-hover); }
+.scroll-cta .arrow {
+  display: inline-block;
+  animation: bounceArrow 1.5s ease-in-out infinite;
+}
+@keyframes bounceArrow {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(6px); }
+}
+
+/* ═══════════════════════════════════════════════
+   PRODUCT SHOWCASE
+   ═══════════════════════════════════════════════ */
+.showcase-section {
+  padding: 80px 0;
+  background: var(--bg-primary);
+  border-bottom: 1px solid var(--border);
+}
+
+.showcase-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.showcase-cards {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.showcase-card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px 28px;
+  text-align: center;
+  position: relative;
+  transition: var(--transition);
+}
+
+.showcase-card:hover {
+  border-color: var(--accent-gold);
+  transform: translateX(4px);
+}
+
+.showcase-icon {
+  font-size: 28px;
+  flex-shrink: 0;
+}
+
+.showcase-card-num {
+  position: absolute;
+  top: 12px;
+  right: 16px;
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--text-muted);
+}
+
+.showcase-card h4 {
+  font-size: 16px;
+  font-weight: 600;
+  margin-bottom: 4px;
+}
+
+.showcase-card p {
+  font-size: 13px;
+  color: var(--text-secondary);
+}
+
+/* ═══════════════════════════════════════════════
+   HOW I THINK BANNER
+   ═══════════════════════════════════════════════ */
+.strategy-banner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 16px 24px;
+  margin-bottom: 32px;
+  background: linear-gradient(90deg, rgba(212,146,42,0.08) 0%, rgba(212,146,42,0.15) 50%, rgba(212,146,42,0.08) 100%);
+  border: 1px solid rgba(212,146,42,0.2);
+  border-radius: var(--radius-sm);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-amber);
+  letter-spacing: 0.5px;
+  position: relative;
+  overflow: hidden;
+}
+
+.strategy-banner::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(212,146,42,0.1), transparent);
+  animation: shimmer 3s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -100%; }
+  100% { left: 100%; }
+}
+
+.strategy-banner .brain-icon {
+  font-size: 20px;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     HEADER
+     ═══════════════════════════════════════════════ -->
+<header id="header">
+  <div class="container">
+    <div class="header-meta">Ronen Aviram · X-Force · July 2026</div>
+    <div class="header-split">
+      <div class="header-left">
+        <div class="header-content">
+          <img src="https://www.silverfort.com/wp-content/uploads/2025/02/cropped-Silverfort-Symbol-Pos-RGB.png"
+               alt="Silverfort" class="header-logo">
+          <div class="header-text">
+            <h1>Sales Intelligence<br><span class="h1-subtitle">"Know Before You Go"</span></h1>
+          </div>
+        </div>
+        <p class="header-tagline">
+          A working prototype of the first internal AI tool I'd build for X-Force - from pain discovery to adoption measurement, in one demo.
+        </p>
+        <div class="simulated-badge">
+          SIMULATED DATA - designed to connect to Salesforce, ZoomInfo, Atlassian (Jira, Confluence), Gong, Slack, Web Intelligence
+        </div>
+      </div>
+
+      <!-- Network Visualization -->
+      <div class="header-network">
+      <svg viewBox="0 0 600 340" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <filter id="nodeShadow"><feDropShadow dx="0" dy="2" stdDeviation="3" flood-opacity="0.2"/></filter>
+        </defs>
+        <!-- Connection lines -->
+        <g stroke="#000" stroke-opacity="0.15" stroke-width="1.5" fill="none">
+          <line x1="100" y1="55" x2="300" y2="170"/>
+          <line x1="500" y1="55" x2="300" y2="170"/>
+          <line x1="70" y1="170" x2="300" y2="170"/>
+          <line x1="530" y1="170" x2="300" y2="170"/>
+          <line x1="100" y1="285" x2="300" y2="170"/>
+          <line x1="500" y1="285" x2="300" y2="170"/>
+          <line x1="100" y1="55" x2="70" y2="170" stroke-dasharray="4,4"/>
+          <line x1="70" y1="170" x2="100" y2="285" stroke-dasharray="4,4"/>
+          <line x1="500" y1="55" x2="530" y2="170" stroke-dasharray="4,4"/>
+          <line x1="530" y1="170" x2="500" y2="285" stroke-dasharray="4,4"/>
+        </g>
+        <!-- Animated data dots -->
+        <circle r="3" fill="#000" opacity="0.3"><animateMotion dur="3s" repeatCount="indefinite" path="M100,55 L300,170"/></circle>
+        <circle r="3" fill="#000" opacity="0.3"><animateMotion dur="2.5s" repeatCount="indefinite" path="M500,55 L300,170"/></circle>
+        <circle r="3" fill="#000" opacity="0.3"><animateMotion dur="3.5s" repeatCount="indefinite" path="M70,170 L300,170"/></circle>
+        <circle r="3" fill="#000" opacity="0.3"><animateMotion dur="2.8s" repeatCount="indefinite" path="M530,170 L300,170"/></circle>
+        <circle r="3" fill="#000" opacity="0.3"><animateMotion dur="3.2s" repeatCount="indefinite" path="M100,285 L300,170"/></circle>
+        <circle r="3" fill="#000" opacity="0.3"><animateMotion dur="2.7s" repeatCount="indefinite" path="M500,285 L300,170"/></circle>
+        <!-- Salesforce -->
+        <g filter="url(#nodeShadow)">
+          <rect x="37" y="30" width="126" height="50" rx="25" fill="#000"/>
+          <g transform="translate(52,43) scale(0.85)"><path fill="#00A1E0" d="M10.006 5.415a4.195 4.195 0 013.045-1.306c1.56 0 2.954.9 3.69 2.205.63-.3 1.35-.45 2.1-.45 2.85 0 5.159 2.34 5.159 5.22s-2.31 5.22-5.176 5.22c-.345 0-.69-.044-1.02-.104a3.75 3.75 0 01-3.3 1.95c-.6 0-1.155-.15-1.65-.375A4.314 4.314 0 018.88 20.4a4.302 4.302 0 01-4.05-2.82c-.27.062-.54.076-.825.076-2.204 0-4.005-1.8-4.005-4.05 0-1.5.811-2.805 2.01-3.51-.255-.57-.39-1.2-.39-1.846 0-2.58 2.1-4.65 4.65-4.65 1.53 0 2.85.705 3.72 1.8"/></g>
+          <text x="113" y="59" text-anchor="middle" fill="#fff" font-family="Inter,sans-serif" font-size="11" font-weight="600">Salesforce</text>
+        </g>
+        <!-- Gong -->
+        <g filter="url(#nodeShadow)">
+          <rect x="437" y="30" width="126" height="50" rx="25" fill="#000"/>
+          <g transform="translate(452,43) scale(0.046)"><path fill="#8039DF" d="M427.2 229.814H328.146C322.677 229.814 318.423 235.887 320.246 240.745L343.946 302.075C345.162 304.504 342.731 307.54 339.693 307.54L309.308 305.719C308.093 305.719 306.877 306.326 305.662 307.54L282.57 340.938C281.354 342.76 278.924 343.367 276.493 342.153L241.247 318.471C240.031 317.256 238.208 317.256 236.385 318.471L187.77 351.261C184.732 353.69 180.478 350.654 181.693 347.011L195.67 298.432C196.278 296.61 195.062 294.181 193.239 293.574L167.716 283.251C165.285 282.037 164.07 279 165.893 277.179L188.378 249.246C189.593 248.031 189.593 245.602 188.378 244.388L169.539 217.062C167.716 214.634 169.539 210.99 172.578 210.99L202.355 208.561C204.785 208.561 206.001 206.74 206.001 204.311L203.57 163.019C203.57 159.982 206.608 158.161 209.039 158.768L245.501 173.949C247.324 174.556 249.147 173.949 250.362 172.734L275.885 144.802C277.708 142.373 281.354 142.98 282.57 146.016L297.762 184.879C299.585 189.737 305.662 191.559 309.916 188.522L369.469 144.194C376.154 139.337 371.9 128.406 363.392 129.621L325.108 134.479C323.285 134.479 321.462 133.871 320.854 132.05L300.193 79.2203C297.762 73.7552 291.077 72.5408 286.823 76.7914L241.854 125.37C240.639 126.585 238.816 127.192 236.993 126.585L178.047 101.688C172.578 99.2591 167.109 102.902 166.501 108.975L164.07 169.698C164.07 172.127 162.247 173.342 160.424 173.342L106.339 176.985C100.263 177.592 96.6164 184.272 100.263 189.737L136.116 242.566C137.332 243.781 137.332 246.21 136.116 247.424L99.6549 289.323C96.6164 292.36 98.4395 299.039 103.301 300.861L145.232 319.078C147.055 319.685 148.27 322.114 147.662 323.936L120.924 427.773C119.101 435.06 127.609 440.525 133.686 436.274L233.954 364.62C235.17 363.406 236.993 363.406 238.816 364.62L284.393 396.804C288.039 399.233 293.508 398.626 295.939 394.375L324.5 350.654C325.108 349.44 326.931 348.832 328.146 348.832L396.208 357.334C401.677 357.941 407.146 353.69 405.323 348.225L376.762 274.75C376.154 272.928 376.762 270.499 379.192 269.285L430.846 244.995C438.138 241.352 435.708 229.814 427.2 229.814Z"/></g>
+          <text x="513" y="59" text-anchor="middle" fill="#fff" font-family="Inter,sans-serif" font-size="11" font-weight="600">Gong</text>
+        </g>
+        <!-- Atlassian -->
+        <g filter="url(#nodeShadow)">
+          <rect x="7" y="145" width="126" height="50" rx="25" fill="#000"/>
+          <g transform="translate(22,158) scale(0.85)">
+            <path fill="#1868DB" d="M7.12 11.084a.683.683 0 00-1.16.126L.075 22.974a.703.703 0 00.63 1.018h8.19a.678.678 0 00.63-.39c1.767-3.65.696-9.203-2.406-12.52z"/>
+            <path fill="#2684FF" d="M11.434.386a15.515 15.515 0 00-.906 15.317l3.95 7.9a.703.703 0 00.628.388h8.19a.703.703 0 00.63-1.017L12.63.38a.664.664 0 00-1.196.006z"/>
+          </g>
+          <text x="83" y="174" text-anchor="middle" fill="#fff" font-family="Inter,sans-serif" font-size="11" font-weight="600">Atlassian</text>
+        </g>
+        <!-- Web Intelligence -->
+        <g filter="url(#nodeShadow)">
+          <rect x="462" y="145" width="136" height="50" rx="25" fill="#000"/>
+          <circle cx="487" cy="170" r="10" fill="none" stroke="#D4922A" stroke-width="1.5"/>
+          <ellipse cx="487" cy="170" rx="4" ry="10" fill="none" stroke="#D4922A" stroke-width="0.8"/>
+          <line x1="477" y1="170" x2="497" y2="170" stroke="#D4922A" stroke-width="0.8"/>
+          <text x="543" y="174" text-anchor="middle" fill="#fff" font-family="Inter,sans-serif" font-size="11" font-weight="600">Web Intel</text>
+        </g>
+        <!-- Slack -->
+        <g filter="url(#nodeShadow)">
+          <rect x="37" y="260" width="126" height="50" rx="25" fill="#000"/>
+          <g transform="translate(52,273) scale(0.85)">
+            <path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 01-2.52 2.523A2.528 2.528 0 010 15.165a2.527 2.527 0 012.522-2.52h2.52v2.52z"/>
+            <path fill="#36C5F0" d="M6.313 15.165a2.527 2.527 0 012.521-2.52 2.527 2.527 0 012.521 2.52v6.313A2.528 2.528 0 018.834 24a2.528 2.528 0 01-2.521-2.522v-6.313z"/>
+            <path fill="#2EB67D" d="M8.834 5.042a2.528 2.528 0 01-2.521-2.52A2.528 2.528 0 018.834 0a2.528 2.528 0 012.521 2.522v2.52H8.834z"/>
+            <path fill="#ECB22E" d="M8.834 6.313a2.528 2.528 0 012.521 2.521 2.528 2.528 0 01-2.521 2.521H2.522A2.528 2.528 0 010 8.834a2.528 2.528 0 012.522-2.521h6.312z"/>
+            <path fill="#E01E5A" d="M18.956 8.834a2.528 2.528 0 012.522-2.521A2.528 2.528 0 0124 8.834a2.528 2.528 0 01-2.522 2.521h-2.522V8.834z"/>
+            <path fill="#36C5F0" d="M17.688 8.834a2.528 2.528 0 01-2.523 2.521 2.527 2.527 0 01-2.52-2.521V2.522A2.527 2.527 0 0115.165 0a2.528 2.528 0 012.523 2.522v6.312z"/>
+            <path fill="#2EB67D" d="M15.165 18.956a2.528 2.528 0 012.523 2.522A2.528 2.528 0 0115.165 24a2.527 2.527 0 01-2.52-2.522v-2.522h2.52z"/>
+            <path fill="#ECB22E" d="M15.165 17.688a2.527 2.527 0 01-2.52-2.523 2.526 2.526 0 012.52-2.52h6.313A2.527 2.527 0 0124 15.165a2.528 2.528 0 01-2.522 2.523h-6.313z"/>
+          </g>
+          <text x="113" y="289" text-anchor="middle" fill="#fff" font-family="Inter,sans-serif" font-size="11" font-weight="600">Slack</text>
+        </g>
+        <!-- ZoomInfo -->
+        <g filter="url(#nodeShadow)">
+          <rect x="437" y="260" width="126" height="50" rx="25" fill="#000"/>
+          <g transform="translate(452,273) scale(0.375)"><path fill="#EA1B15" d="M44.0001 15.9999H47.4371C47.7488 15.9999 48.0001 16.2514 48.0001 16.5631V25.4267C48.0001 25.7385 47.7588 25.9899 47.4472 26H44.5631C44.2514 26 44.0001 25.7486 44.0001 25.4368V22.8437L21.7656 44H27.437C27.7487 44 28 44.2514 28 44.5632V47.4369C28 47.7486 27.7487 48 27.437 48H16.563C16.2513 48 16 47.7486 16 47.4369V44L41.2032 20H38.5631C38.2514 20 38.0001 19.7485 38.0001 19.4368V16.5732C38.0001 16.2614 38.2514 16.01 38.5631 16.01L44.0001 15.9999ZM24 20L33.4371 19.9899C33.7487 19.9899 34.0001 19.7385 34.0001 19.4267V16.5631C34.0001 16.2514 33.7487 15.9999 33.4471 15.9999H16.5831C16.2714 15.9999 16.0201 16.2514 16.0201 16.5631V25.4368C16.0201 25.7486 16.2714 26 16.5831 26H19.4471C19.7587 26 20 25.7486 20 25.4368V20H24ZM44.0001 44H32.563C32.2514 44 32 44.2514 32 44.5632V47.4369C32 47.7486 32.2514 48 32.563 48H47.4371C47.7488 48 48.0001 47.7486 48.0001 47.4369V38.5163C48.0001 38.2045 47.7488 37.9531 47.4371 37.9531H44.5631C44.2514 37.9531 44.0001 38.2045 44.0001 38.5163V44Z"/></g>
+          <text x="513" y="289" text-anchor="middle" fill="#fff" font-family="Inter,sans-serif" font-size="11" font-weight="600">ZoomInfo</text>
+        </g>
+        <!-- Center: Meeting Brief -->
+        <g filter="url(#nodeShadow)">
+          <circle cx="300" cy="170" r="52" fill="#000"/>
+          <circle cx="300" cy="170" r="50" fill="none" stroke="#D4922A" stroke-width="2"/>
+          <text x="300" y="161" text-anchor="middle" fill="#fff" font-family="Inter,sans-serif" font-size="12" font-weight="700">Sales</text>
+          <text x="300" y="178" text-anchor="middle" fill="#fff" font-family="Inter,sans-serif" font-size="12" font-weight="700">Intelligence</text>
+          <text x="300" y="195" text-anchor="middle" fill="#D4922A" font-family="Inter,sans-serif" font-size="9" font-weight="600">UNIFIED VIEW</text>
+        </g>
+        <!-- Pulse -->
+        <circle cx="300" cy="170" r="52" fill="none" stroke="#000" stroke-width="1" opacity="0">
+          <animate attributeName="r" from="52" to="80" dur="2s" repeatCount="indefinite"/>
+          <animate attributeName="opacity" from="0.3" to="0" dur="2s" repeatCount="indefinite"/>
+        </circle>
+      </svg>
+      </div>
+    </div><!-- /header-split -->
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     PRODUCT SHOWCASE - ONE TOOL, THREE PROBLEMS
+     ═══════════════════════════════════════════════ -->
+<section id="product-showcase" class="showcase-section">
+  <div class="container">
+    <div class="showcase-inner">
+      <div class="showcase-text">
+        <div class="section-label">The Product</div>
+        <h2 class="section-title" style="font-size:36px;">One Tool, Three Problems</h2>
+        <p style="font-size:17px;color:var(--text-secondary);margin-bottom:32px;max-width:500px;">
+          One tool, one workflow, one habit. That's how you get adoption.
+        </p>
+        <span class="scroll-cta" style="pointer-events:none;cursor:default;">
+          <span class="arrow">↓</span> Scroll to see it in action
+        </span>
+      </div>
+      <div class="showcase-cards">
+        <div class="showcase-card">
+          <div class="showcase-card-num">01</div>
+          <h4>Meeting Prep</h4>
+          <p>AEs spend too long prepping for each meeting manually</p>
+        </div>
+        <div class="showcase-card">
+          <div class="showcase-card-num">02</div>
+          <h4>Competitive Intel</h4>
+          <p>Scattered across org systems & tribal knowledge</p>
+        </div>
+        <div class="showcase-card">
+          <div class="showcase-card-num">03</div>
+          <h4>Pipeline Insights</h4>
+          <p>Managers lack visibility into what's actually working</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     CAROUSEL
+     ═══════════════════════════════════════════════ -->
+<section id="carousel-section">
+  <div class="container">
+    <div class="section-label">Strategy</div>
+    <h2 class="section-title">Why This Tool, Why Now</h2>
+    <p class="section-subtitle">This section shows how I think — from problem discovery to adoption methodology</p>
+    <a href="#ae-view" class="skip-to-demo" onclick="event.preventDefault();document.getElementById('ae-view').scrollIntoView({behavior:'smooth'});">Skip to demo ↓</a>
+
+    <div class="carousel-tabs" id="carouselTabs">
+      <button class="carousel-tab active" onclick="goToSlide(0)">The Real Problem</button>
+      <button class="carousel-tab" onclick="goToSlide(1)">Finding the Pain</button>
+      <button class="carousel-tab" onclick="goToSlide(2)">Adoption Philosophy</button>
+      <button class="carousel-tab" onclick="goToSlide(3)">What Success Looks Like</button>
+    </div>
+
+    <div class="carousel-wrapper">
+      <div class="carousel-track" id="carouselTrack">
+
+        <!-- Slide 1 -->
+        <div class="carousel-slide">
+          <div class="slide-card">
+            <div class="slide-number">01 / 04</div>
+            <h3>The Real Problem</h3>
+            <p>Internal AI tools fail not because of technology - they fail because nobody adopts them. 
+               X-Force needs a Product Owner who thinks adoption-first, not feature-first.</p>
+            <div style="display:flex;flex-direction:column;gap:16px;margin-top:32px;">
+              <div style="padding:16px 24px;background:rgba(231,76,60,0.06);border:1px solid rgba(231,76,60,0.15);border-radius:var(--radius-sm);opacity:0.7;">
+                <div style="font-size:11px;font-weight:600;color:var(--accent-danger);letter-spacing:1px;margin-bottom:10px;">MOST TEAMS</div>
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                  <span style="font-size:14px;font-weight:500;color:var(--text-secondary);">Build</span>
+                  <span style="color:var(--text-muted);">→</span>
+                  <span style="font-size:14px;font-weight:500;color:var(--text-secondary);">Ship</span>
+                  <span style="color:var(--text-muted);">→</span>
+                  <span style="font-size:14px;font-weight:500;color:var(--text-secondary);">Hope for adoption</span>
+                  <span style="color:var(--text-muted);">→</span>
+                  <span style="font-size:14px;font-weight:600;color:var(--accent-danger);text-decoration:line-through;">Nobody uses it</span>
+                </div>
+              </div>
+              <div style="padding:16px 24px;background:rgba(212,146,42,0.08);border:1px solid rgba(212,146,42,0.25);border-radius:var(--radius-sm);">
+                <div style="font-size:11px;font-weight:600;color:var(--accent-primary);letter-spacing:1px;margin-bottom:10px;">ADOPTION-FIRST</div>
+                <div style="display:flex;align-items:center;gap:12px;flex-wrap:wrap;">
+                  <span style="font-size:14px;font-weight:500;color:var(--text-primary);">Discover real pain</span>
+                  <span style="color:var(--accent-primary);">→</span>
+                  <span style="font-size:14px;font-weight:500;color:var(--text-primary);">Validate with data</span>
+                  <span style="color:var(--accent-primary);">→</span>
+                  <span style="font-size:14px;font-weight:500;color:var(--text-primary);">Build with users</span>
+                  <span style="color:var(--accent-primary);">→</span>
+                  <span style="font-size:14px;font-weight:600;color:var(--accent-success);">Iterate until it sticks</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Slide 2 -->
+        <div class="carousel-slide">
+          <div class="slide-card">
+            <div class="slide-number">02 / 04</div>
+            <h3>How I Find the Pain (That Matters)</h3>
+            <p>Not every pain is worth solving. Only KPI-aligned pains make it to the backlog.</p>
+            <div class="funnel">
+              <div class="funnel-step" style="width:100%;background:rgba(212,146,42,0.15);color:var(--text-secondary);">
+                <span style="font-weight:700;margin-right:8px;color:var(--accent-primary);">1</span> Map the full user journey
+              </div>
+              <div style="text-align:center;color:var(--text-muted);font-size:14px;line-height:1;">&#9660;</div>
+              <div class="funnel-step" style="width:80%;background:rgba(212,146,42,0.25);color:var(--text-secondary);">
+                <span style="font-weight:700;margin-right:8px;color:var(--accent-primary);">2</span> Translate friction points to KPIs
+              </div>
+              <div style="text-align:center;color:var(--text-muted);font-size:14px;line-height:1;">&#9660;</div>
+              <div class="funnel-step" style="width:55%;background:rgba(212,146,42,0.5);color:#fff;">
+                <span style="font-weight:700;margin-right:8px;">3</span> Spec only what moves metrics
+              </div>
+              <div style="text-align:center;color:var(--text-muted);font-size:14px;line-height:1;">&#9660;</div>
+              <div class="funnel-step" style="width:35%;background:var(--accent-primary);color:#fff;font-weight:600;">
+                <span style="font-weight:700;margin-right:8px;">4</span> Build and measure adoption
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 3 -->
+        <div class="carousel-slide">
+          <div class="slide-card">
+            <div class="slide-number">03 / 04</div>
+            <h3>My Adoption Philosophy</h3>
+            <p>Adoption is not a phase after launch. It starts at discovery and runs through every step.</p>
+            <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-top:24px;">
+              <div style="padding:12px 20px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-sm);font-weight:600;font-size:14px;">Discover</div>
+              <span style="color:var(--accent-primary);font-size:16px;">→</span>
+              <div style="padding:12px 20px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-sm);font-weight:600;font-size:14px;">Validate</div>
+              <span style="color:var(--accent-primary);font-size:16px;">→</span>
+              <div style="padding:12px 20px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-sm);font-weight:600;font-size:14px;">Co-build <span style="font-weight:400;color:var(--text-secondary);font-size:12px;">(with users)</span></div>
+              <span style="color:var(--accent-primary);font-size:16px;">→</span>
+              <div style="padding:12px 20px;background:rgba(0,184,148,0.1);border:1px solid rgba(0,184,148,0.3);border-radius:var(--radius-sm);font-weight:600;font-size:14px;color:var(--accent-success);">Adopt</div>
+              <span style="color:var(--accent-primary);font-size:16px;">→</span>
+              <div style="padding:12px 20px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-sm);font-weight:600;font-size:14px;">Measure</div>
+              <span style="color:var(--accent-primary);font-size:16px;">→</span>
+              <div style="padding:12px 20px;background:var(--bg-elevated);border:1px solid var(--border);border-radius:var(--radius-sm);font-weight:600;font-size:14px;">Iterate</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Slide 5 -->
+        <div class="carousel-slide">
+          <div class="slide-card">
+            <div class="slide-number">04 / 04</div>
+            <h3>What Success Looks Like</h3>
+            <p>Real metrics, not vanity metrics.</p>
+            <div class="metrics-grid">
+              <div class="metric-item">
+                <div class="value">&gt;70%</div>
+                <div class="label">Adoption Rate</div>
+              </div>
+              <div class="metric-item">
+                <div class="value">+17%</div>
+                <div class="label">Win Rate Lift</div>
+              </div>
+              <div class="metric-item">
+                <div class="value">142</div>
+                <div class="label">Briefs Confirmed</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="carousel-nav">
+      <button class="carousel-btn" onclick="moveCarousel(-1)">‹</button>
+      <div class="carousel-dots" id="carouselDots"></div>
+      <button class="carousel-btn" onclick="moveCarousel(1)">›</button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     AE VIEW - MEETING PREP
+     ═══════════════════════════════════════════════ -->
+<section id="ae-view">
+  <div class="container">
+    <div class="section-label">Live Demo</div>
+    <h2 class="section-title">AE View — Meeting Prep</h2>
+    <p class="section-subtitle">Select an account to generate an AI-powered meeting brief<br><span style="font-size:11px;opacity:0.5;">Starting with the AE workflow — SE, CSM & leadership views follow the same architecture</span></p>
+
+    <div class="input-form">
+      <div class="form-group">
+        <label>Account</label>
+        <select id="accountSelect">
+          <option value="kayak" selected>Kayak</option>
+          <option value="huntsville">Huntsville Hospital</option>
+          <option value="singtel">Singtel</option>
+          <option value="ups">UPS</option>
+          <option value="thales">Thales</option>
+          <option value="gm">GM (General Motors)</option>
+          <option value="encora">Encora</option>
+          <option value="nhs">NHS Blood and Transplant</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Meeting Type</label>
+        <select id="meetingType">
+          <option value="discovery">Discovery</option>
+          <option value="technical">Technical Deep-dive</option>
+          <option value="poc">POC Review</option>
+          <option value="executive">Executive Presentation</option>
+          <option value="renewal">Renewal</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Competitor Mentioned</label>
+        <select id="competitorSelect">
+          <option value="auto">Auto-detect</option>
+          <option value="crowdstrike">CrowdStrike</option>
+          <option value="okta">Okta</option>
+          <option value="cyberark">CyberArk</option>
+          <option value="ping">Ping Identity</option>
+          <option value="none">None</option>
+        </select>
+      </div>
+    </div>
+
+    <button class="generate-btn" onclick="generateBrief()">
+      Generate Meeting Brief
+    </button>
+
+    <!-- Enrichment Animation -->
+    <div class="enrichment-bar" id="enrichmentBar">
+      <div style="font-size:13px;font-weight:600;color:var(--text-secondary);margin-bottom:12px;">Auto-enriching from connected sources...</div>
+      <div class="enrichment-sources" id="enrichmentSources">
+        <div class="enrichment-source" data-source="salesforce">
+          <svg viewBox="0 0 24 24" width="20" height="20"><path fill="#00A1E0" d="M10.006 5.415a4.195 4.195 0 013.045-1.306c1.56 0 2.954.9 3.69 2.205.63-.3 1.35-.45 2.1-.45 2.85 0 5.159 2.34 5.159 5.22s-2.31 5.22-5.176 5.22c-.345 0-.69-.044-1.02-.104a3.75 3.75 0 01-3.3 1.95c-.6 0-1.155-.15-1.65-.375A4.314 4.314 0 018.88 20.4a4.302 4.302 0 01-4.05-2.82c-.27.062-.54.076-.825.076-2.204 0-4.005-1.8-4.005-4.05 0-1.5.811-2.805 2.01-3.51-.255-.57-.39-1.2-.39-1.846 0-2.58 2.1-4.65 4.65-4.65 1.53 0 2.85.705 3.72 1.8"/></svg>
+          <span class="source-name">Salesforce</span>
+          <span class="check">&#10003;</span>
+        </div>
+        <div class="enrichment-source" data-source="zoominfo">
+          <svg viewBox="0 0 64 64" width="18" height="18"><path fill="#EA1B15" d="M44 16h3.437c.312 0 .563.251.563.563v8.864c0 .312-.241.563-.553.563H44.563A.563.563 0 0144 25.437v-2.594L21.766 44h5.671c.312 0 .563.251.563.563v2.874A.563.563 0 0127.437 48H16.563A.563.563 0 0116 47.437V44l25.203-24h-2.64a.563.563 0 01-.563-.563v-2.864c0-.312.251-.563.563-.563H44zM24 20l9.437-.01a.563.563 0 00.563-.563v-2.864a.563.563 0 00-.553-.563H16.583a.563.563 0 00-.563.563v8.874c0 .312.251.563.563.563h2.864a.563.563 0 00.553-.563V20h4zm20 24H32.563a.563.563 0 00-.563.563v2.874c0 .312.251.563.563.563h14.874a.563.563 0 00.563-.563v-8.921a.563.563 0 00-.563-.563h-2.874a.563.563 0 00-.563.563V44z"/></svg>
+          <span class="source-name">ZoomInfo</span>
+          <span class="check">&#10003;</span>
+        </div>
+        <div class="enrichment-source" data-source="confluence">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#2684FF" d="M7.12 11.084a.683.683 0 00-1.16.126L.075 22.974a.703.703 0 00.63 1.018h8.19a.678.678 0 00.63-.39c1.767-3.65.696-9.203-2.406-12.52zM11.434.386a15.515 15.515 0 00-.906 15.317l3.95 7.9a.703.703 0 00.628.388h8.19a.703.703 0 00.63-1.017L12.63.38a.664.664 0 00-1.196.006z"/></svg>
+          <span class="source-name">Atlassian</span>
+          <span class="check">&#10003;</span>
+        </div>
+        <div class="enrichment-source" data-source="gong">
+          <svg viewBox="0 0 512 512" width="18" height="18"><path fill="#8039DF" d="M427.2 229.814H328.146C322.677 229.814 318.423 235.887 320.246 240.745L343.946 302.075C345.162 304.504 342.731 307.54 339.693 307.54L309.308 305.719C308.093 305.719 306.877 306.326 305.662 307.54L282.57 340.938C281.354 342.76 278.924 343.367 276.493 342.153L241.247 318.471C240.031 317.256 238.208 317.256 236.385 318.471L187.77 351.261C184.732 353.69 180.478 350.654 181.693 347.011L195.67 298.432C196.278 296.61 195.062 294.181 193.239 293.574L167.716 283.251C165.285 282.037 164.07 279 165.893 277.179L188.378 249.246C189.593 248.031 189.593 245.602 188.378 244.388L169.539 217.062C167.716 214.634 169.539 210.99 172.578 210.99L202.355 208.561C204.785 208.561 206.001 206.74 206.001 204.311L203.57 163.019C203.57 159.982 206.608 158.161 209.039 158.768L245.501 173.949C247.324 174.556 249.147 173.949 250.362 172.734L275.885 144.802C277.708 142.373 281.354 142.98 282.57 146.016L297.762 184.879C299.585 189.737 305.662 191.559 309.916 188.522L369.469 144.194C376.154 139.337 371.9 128.406 363.392 129.621L325.108 134.479C323.285 134.479 321.462 133.871 320.854 132.05L300.193 79.2203C297.762 73.7552 291.077 72.5408 286.823 76.7914L241.854 125.37C240.639 126.585 238.816 127.192 236.993 126.585L178.047 101.688C172.578 99.2591 167.109 102.902 166.501 108.975L164.07 169.698C164.07 172.127 162.247 173.342 160.424 173.342L106.339 176.985C100.263 177.592 96.6164 184.272 100.263 189.737L136.116 242.566C137.332 243.781 137.332 246.21 136.116 247.424L99.6549 289.323C96.6164 292.36 98.4395 299.039 103.301 300.861L145.232 319.078C147.055 319.685 148.27 322.114 147.662 323.936L120.924 427.773C119.101 435.06 127.609 440.525 133.686 436.274L233.954 364.62C235.17 363.406 236.993 363.406 238.816 364.62L284.393 396.804C288.039 399.233 293.508 398.626 295.939 394.375L324.5 350.654C325.108 349.44 326.931 348.832 328.146 348.832L396.208 357.334C401.677 357.941 407.146 353.69 405.323 348.225L376.762 274.75C376.154 272.928 376.762 270.499 379.192 269.285L430.846 244.995C438.138 241.352 435.708 229.814 427.2 229.814Z"/></svg>
+          <span class="source-name">Gong</span>
+          <span class="check">&#10003;</span>
+        </div>
+        <div class="enrichment-source" data-source="slack">
+          <svg viewBox="0 0 24 24" width="18" height="18"><path fill="#E01E5A" d="M5.042 15.165a2.528 2.528 0 01-2.52 2.523A2.528 2.528 0 010 15.165a2.527 2.527 0 012.522-2.52h2.52v2.52z"/><path fill="#36C5F0" d="M6.313 15.165a2.527 2.527 0 012.521-2.52 2.527 2.527 0 012.521 2.52v6.313A2.528 2.528 0 018.834 24a2.528 2.528 0 01-2.521-2.522v-6.313z"/><path fill="#2EB67D" d="M8.834 5.042a2.528 2.528 0 01-2.521-2.52A2.528 2.528 0 018.834 0a2.528 2.528 0 012.521 2.522v2.52H8.834z"/><path fill="#ECB22E" d="M8.834 6.313a2.528 2.528 0 012.521 2.521 2.528 2.528 0 01-2.521 2.521H2.522A2.528 2.528 0 010 8.834a2.528 2.528 0 012.522-2.521h6.312z"/><path fill="#E01E5A" d="M18.956 8.834a2.528 2.528 0 012.522-2.521A2.528 2.528 0 0124 8.834a2.528 2.528 0 01-2.522 2.521h-2.522V8.834z"/><path fill="#36C5F0" d="M17.688 8.834a2.528 2.528 0 01-2.523 2.521 2.527 2.527 0 01-2.52-2.521V2.522A2.527 2.527 0 0115.165 0a2.528 2.528 0 012.523 2.522v6.312z"/><path fill="#2EB67D" d="M15.165 18.956a2.528 2.528 0 012.523 2.522A2.528 2.528 0 0115.165 24a2.527 2.527 0 01-2.52-2.522v-2.522h2.52z"/><path fill="#ECB22E" d="M15.165 17.688a2.527 2.527 0 01-2.52-2.523 2.526 2.526 0 012.52-2.52h6.313A2.527 2.527 0 0124 15.165a2.528 2.528 0 01-2.522 2.523h-6.313z"/></svg>
+          <span class="source-name">Slack</span>
+          <span class="check">&#10003;</span>
+        </div>
+        <div class="enrichment-source" data-source="webintel">
+          <svg viewBox="0 0 24 24" width="18" height="18"><circle cx="12" cy="12" r="10" fill="none" stroke="#D4922A" stroke-width="1.5"/><ellipse cx="12" cy="12" rx="4" ry="10" fill="none" stroke="#D4922A" stroke-width="0.8"/><line x1="2" y1="12" x2="22" y2="12" stroke="#D4922A" stroke-width="0.8"/></svg>
+          <span class="source-name">Web Intel</span>
+          <span class="check">&#10003;</span>
+        </div>
+        <div class="enrichment-source" data-source="more">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="#888" stroke-width="1.5"><circle cx="6" cy="12" r="1.5" fill="#888" stroke="none"/><circle cx="12" cy="12" r="1.5" fill="#888" stroke="none"/><circle cx="18" cy="12" r="1.5" fill="#888" stroke="none"/></svg>
+          <span class="source-name">+3 more</span>
+          <span class="check">&#10003;</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Brief Output -->
+    <div class="brief-output" id="briefOutput">
+
+      <div class="brief-top-bar">
+        <div class="brief-top-info">
+          <div class="brief-top-title">Meeting Brief — <span id="briefAccountName"></span></div>
+          <div class="brief-top-meta" id="briefMeta"></div>
+        </div>
+        <button class="download-btn" onclick="downloadBrief()">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Download PDF
+        </button>
+      </div>
+
+      <div class="brief-toggle-bar">
+        <span style="margin-right:auto;font-size:13px;font-weight:600;color:var(--accent-primary);letter-spacing:0.3px;">Your brief is ready — expand any section to explore</span>
+        <button onclick="toggleAllSections(true)">Expand All</button>
+        <button onclick="toggleAllSections(false)">Collapse All</button>
+      </div>
+
+      <!-- Section 1: Account Snapshot -->
+      <div class="brief-section" id="section-snapshot">
+        <div class="brief-section-header" onclick="toggleSection('section-snapshot')">
+          <h4>Account Snapshot</h4>
+          <span class="toggle">▼</span>
+        </div>
+        <div class="brief-section-body" id="snapshot-body"></div>
+      </div>
+
+      <!-- Section 2: Use Cases -->
+      <div class="brief-section" id="section-usecases">
+        <div class="brief-section-header" onclick="toggleSection('section-usecases')">
+          <h4>Relevant Use Cases</h4>
+          <span class="toggle">▼</span>
+        </div>
+        <div class="brief-section-body" id="usecases-body"></div>
+      </div>
+
+      <!-- Section 3: Competitive Edge -->
+      <div class="brief-section" id="section-competitive" style="display:none;">
+        <div class="brief-section-header" onclick="toggleSection('section-competitive')">
+          <h4>Competitive Edge</h4>
+          <span class="toggle">▼</span>
+        </div>
+        <div class="brief-section-body" id="competitive-body"></div>
+      </div>
+
+      <!-- Section 3b: Battle Cards -->
+      <div class="brief-section" id="section-battlecards" style="display:none;">
+        <div class="brief-section-header" onclick="toggleSection('section-battlecards')">
+          <h4>Battle Cards</h4>
+          <span class="toggle">▼</span>
+        </div>
+        <div class="brief-section-body" id="battlecards-body"></div>
+      </div>
+
+      <!-- Section 4: Objection Playbook -->
+      <div class="brief-section" id="section-objections">
+        <div class="brief-section-header" onclick="toggleSection('section-objections')">
+          <h4>Objection Playbook</h4>
+          <span class="toggle">▼</span>
+        </div>
+        <div class="brief-section-body" id="objections-body"></div>
+      </div>
+
+      <!-- Section 5: Meeting Agenda -->
+      <div class="brief-section" id="section-agenda">
+        <div class="brief-section-header" onclick="toggleSection('section-agenda')">
+          <h4>Meeting Agenda</h4>
+          <span class="toggle">▼</span>
+        </div>
+        <div class="brief-section-body" id="agenda-body"></div>
+      </div>
+
+
+
+      <!-- Feedback Loop -->
+      <div class="feedback-section" id="feedbackSection">
+        <h4>&#x1F504; Close the Loop</h4>
+        <p class="feedback-sub">30 seconds now = smarter briefs next time</p>
+        <div class="feedback-incentive">The more you feed back, the sharper your next brief gets.</div>
+        <div class="feedback-form">
+          <div class="form-group">
+            <label>Outcome</label>
+            <select>
+              <option>Won</option>
+              <option>Progressed</option>
+              <option selected>Stalled</option>
+              <option>Lost</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>What landed?</label>
+            <select id="whatLanded" multiple style="min-height:80px;">
+            </select>
+          </div>
+          <div class="form-group full-width">
+            <label>What to improve</label>
+            <textarea placeholder="One sentence - what would make the next brief better?"></textarea>
+          </div>
+          <div>
+            <button class="action-btn primary" onclick="submitFeedback()">Submit Feedback</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     MANAGEMENT VIEW - DASHBOARD
+     ═══════════════════════════════════════════════ -->
+<section id="dashboard">
+  <div class="container">
+    <div class="section-label">Adoption &amp; Impact</div>
+    <h2 class="section-title">Management View — Adoption Dashboard</h2>
+    <p class="section-subtitle">Real-time visibility into tool adoption and business impact</p>
+
+    <!-- KPIs -->
+    <div class="kpi-row" style="grid-template-columns:repeat(3,1fr);">
+      <div class="kpi-card" style="border-color:rgba(212,146,42,0.3);">
+        <div class="kpi-label">Adoption Rate</div>
+        <div class="kpi-value" style="color:var(--accent-primary);">78%</div>
+        <div class="kpi-change" style="color:var(--accent-primary);">↑ from 34% at launch</div>
+        <div class="kpi-note">% of AEs using tool weekly</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Avg Prep Time</div>
+        <div class="kpi-value" style="color:var(--accent-success);">8 min</div>
+        <div class="kpi-change" style="color:var(--accent-success);">↓ from 47 min manually</div>
+        <div class="kpi-note">83% reduction per meeting</div>
+      </div>
+      <div class="kpi-card">
+        <div class="kpi-label">Win Rate Lift</div>
+        <div class="kpi-value" style="color:var(--text-primary);">+17%</div>
+        <div class="kpi-change" style="color:var(--text-primary);">41% → 58%</div>
+        <div class="kpi-note">Deals with brief vs. without</div>
+      </div>
+    </div>
+
+    <!-- Charts -->
+    <div class="dashboard-grid">
+      <div class="chart-card">
+        <h4>Top Use Cases by Industry</h4>
+        <canvas id="useCaseChart"></canvas>
+      </div>
+      <div class="chart-card">
+        <h4>Win Rate: With Brief vs. Without</h4>
+        <canvas id="winRateChart"></canvas>
+      </div>
+    </div>
+
+    <!-- Heatmap -->
+    <div class="heatmap-card">
+      <h4>Adoption Heatmap - Teams × Weeks</h4>
+      <table class="heatmap-table" id="heatmapTable"></table>
+    </div>
+
+
+  </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════
+     TECHNICAL DETAILS
+     ═══════════════════════════════════════════════ -->
+<section style="padding:0 0 48px;">
+  <div class="container">
+    <details class="tech-details">
+      <summary>For the technically curious — how this would work in production</summary>
+      <div class="tech-inner">
+        <h4>Architecture Overview</h4>
+        <div class="tech-sub">A microservices enrichment pipeline — every source is an independent connector that feeds a unified brief engine</div>
+        <div class="tech-tree"><span class="dir">sales-intelligence/</span>
+├── <span class="file">orchestrator/</span>  <span class="desc">— Central engine: receives AE request, fans out to connectors, assembles brief</span>
+│   ├── <span class="file">brief-engine</span>  <span class="desc">— Merges enriched data into structured brief with 5 sections</span>
+│   ├── <span class="file">priority-ranker</span>  <span class="desc">— Scores use cases by deal stage, industry, and past win patterns</span>
+│   └── <span class="file">agenda-builder</span>  <span class="desc">— Generates meeting agenda from Gong top-performer analysis</span>
+│
+├── <span class="file">connectors/</span>  <span class="desc">— 6 independent data source adapters, each with its own auth and rate limits:</span>
+│   ├── <span class="file">salesforce</span>  <span class="desc">— Account data, deal stage, stakeholders, pipeline history</span>
+│   ├── <span class="file">zoominfo</span>  <span class="desc">— Org chart, company intel, tech stack, recent news</span>
+│   ├── <span class="file">atlassian</span>  <span class="desc">— Jira tickets (use case evidence), Confluence (competitive docs)</span>
+│   ├── <span class="file">gong</span>  <span class="desc">— Call transcripts, objection patterns, winning talk tracks</span>
+│   ├── <span class="file">slack</span>  <span class="desc">— Deal room context, SE/CSM signals, internal sentiment</span>
+│   └── <span class="file">web-intel</span>  <span class="desc">— Recent news, earnings, security incidents, job postings</span>
+│
+├── <span class="file">competitive/</span>  <span class="desc">— Battle card engine maintained by Product Marketing:</span>
+│   ├── <span class="file">comparison-matrix</span>  <span class="desc">— Feature-by-feature scoring vs. CrowdStrike, Okta, CyberArk, Ping</span>
+│   └── <span class="file">objection-bank</span>  <span class="desc">— "They say X / You say Y" from top-performing Gong calls</span>
+│
+├── <span class="file">feedback-loop/</span>  <span class="desc">— Post-meeting learning system:</span>
+│   ├── <span class="file">outcome-tracker</span>  <span class="desc">— Captures win/loss/stall + what landed per brief</span>
+│   └── <span class="file">model-trainer</span>  <span class="desc">— Re-weights use case ranking and objection relevance from outcomes</span>
+│
+├── <span class="file">export/</span>  <span class="desc">— Output formats:</span>
+│   ├── <span class="file">pdf-generator</span>  <span class="desc">— Branded meeting brief PDF with sections + stakeholder map</span>
+│   └── <span class="file">slack-digest</span>  <span class="desc">— Auto-posts brief summary to deal room before meeting</span>
+│
+└── <span class="file">dashboard/</span>  <span class="desc">— Management visibility layer:</span>
+    ├── <span class="file">adoption-tracker</span>  <span class="desc">— Usage by team, region, deal stage</span>
+    └── <span class="file">impact-analyzer</span>  <span class="desc">— Win rate correlation, prep time reduction, feedback trends</span></div>
+
+        <div class="tech-stats">
+          <div class="stat"><span class="stat-num">6</span><span class="stat-label">Data Sources</span></div>
+          <div class="stat"><span class="stat-num">5</span><span class="stat-label">Brief Sections</span></div>
+          <div class="stat"><span class="stat-num">4</span><span class="stat-label">Competitors</span></div>
+          <div class="stat"><span class="stat-num">8</span><span class="stat-label">Customer Profiles</span></div>
+          <div class="stat"><span class="stat-num">4</span><span class="stat-label">Meeting Types</span></div>
+        </div>
+      </div>
+    </details>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+     ═══════════════════════════════════════════════ -->
+<footer>
+  <div class="container">
+    <p>Built by <a href="https://www.linkedin.com/in/ronenaviram/" target="_blank">Ronen Aviram</a> · X-Force Application · July 2026</p>
+  </div>
+</footer>
+
+<script>
+// ═══════════════════════════════════════════════
+// SIMULATED DATA - 8 CUSTOMERS
+// ═══════════════════════════════════════════════
+const customers = {
+  kayak: {
+    name: "Kayak", industry: "Travel / Tech", size: "2,400", hq: "Stamford, CT",
+    identityStack: [
+      { name: "Azure AD", legacy: false },
+      { name: "Legacy Booking Systems", legacy: true },
+      { name: "AWS IAM", legacy: false }
+    ],
+    dealStage: "Technical Evaluation", dealSize: "$380K", closeDate: "Q3 2026",
+    champion: { name: "Sarah Chen", title: "Director of Security" },
+    buyer: { name: "David Kowalski", title: "VP Engineering" },
+    evaluator: { name: "James Park", title: "Sr. Security Architect" },
+    competitor: "crowdstrike",
+    useCases: [
+      {
+        name: "MFA for Legacy Booking Systems",
+        relevance: "Kayak runs 180+ legacy booking endpoints with no MFA - highest attack surface across travel platforms",
+        proof: "Similar deployment at Booking Holdings reduced legacy system compromise by 91%",
+        oneLiner: "We can extend MFA to your legacy booking systems without touching a single line of code."
+      },
+      {
+        name: "Service Account Protection",
+        relevance: "1,200+ service accounts connecting booking engines to payment processors - zero visibility",
+        proof: "Comparable deployment at Expedia Group cut service account incidents by 84%",
+        oneLiner: "Your booking-to-payment pipeline has 1,200 service accounts we can protect today."
+      },
+      {
+        name: "Zero Trust for Cloud Workloads",
+        relevance: "Multi-cloud (AWS + Azure) with inconsistent identity policies across environments",
+        proof: "Travel tech company with similar stack achieved unified policy in 3 weeks",
+        oneLiner: "One identity policy across AWS and Azure - no rip-and-replace needed."
+      }
+    ],
+    objections: [
+      {
+        text: "We're already covered by CrowdStrike Falcon",
+        why: "Common when security teams equate EDR with identity protection - different threat surfaces",
+        response: "CrowdStrike is excellent at endpoint detection. But identity-based attacks - credential theft, lateral movement via service accounts - happen at a layer EDR doesn't see. We complement CrowdStrike by covering the identity attack surface."
+      },
+      {
+        text: "We can't touch the legacy booking systems - too fragile",
+        why: "Legacy system fear is real in travel - downtime = revenue loss. Key differentiator: agentless.",
+        response: "That's exactly why we built agentless. Silverfort sits at the directory layer - no agents, no proxies, no code changes on your booking systems. We protect them without touching them."
+      }
+    ],
+    agendas: {
+      discovery: [
+        { time: "0:00", topic: "Intros + meeting goals" },
+        { time: "0:05", topic: "How does your team handle identity security for booking systems today?" },
+        { time: "0:12", topic: "Walk me through your service account landscape" },
+        { time: "0:20", topic: "What's your biggest concern about extending MFA to legacy apps?" },
+        { time: "0:25", topic: "Quick overview: how Silverfort works (5 min, not a demo)" },
+        { time: "0:28", topic: "Next steps + agree on success criteria" }
+      ],
+      technical: [
+        { time: "0:00", topic: "Recap discovery findings" },
+        { time: "0:05", topic: "Live demo: MFA on legacy booking endpoint" },
+        { time: "0:15", topic: "Architecture walkthrough: Azure AD + legacy integration" },
+        { time: "0:25", topic: "Service account discovery - show detection capabilities" },
+        { time: "0:35", topic: "Q&A + integration concerns" },
+        { time: "0:42", topic: "POC scope + timeline" }
+      ],
+      executive: [
+        { time: "0:00", topic: "Business context + why now" },
+        { time: "0:05", topic: "Identity is the #1 attack vector in travel tech" },
+        { time: "0:10", topic: "ROI model: cost of breach vs. Silverfort deployment" },
+        { time: "0:18", topic: "Two use cases: legacy MFA + service accounts" },
+        { time: "0:25", topic: "Next steps + executive alignment" }
+      ],
+      poc: [
+        { time: "0:00", topic: "POC objectives recap" },
+        { time: "0:05", topic: "Results walkthrough: what we found" },
+        { time: "0:15", topic: "Risk reduction quantified" },
+        { time: "0:22", topic: "Production rollout plan" },
+        { time: "0:28", topic: "Commercials + timeline" }
+      ],
+      renewal: [
+        { time: "0:00", topic: "Partnership review + wins" },
+        { time: "0:08", topic: "Usage metrics + ROI delivered" },
+        { time: "0:15", topic: "Roadmap: what's coming for Kayak" },
+        { time: "0:22", topic: "Expansion opportunities" },
+        { time: "0:28", topic: "Renewal terms" }
+      ]
+    }
+  },
+  huntsville: {
+    name: "Huntsville Hospital", industry: "Healthcare", size: "8,500", hq: "Huntsville, AL",
+    identityStack: [
+      { name: "On-prem AD", legacy: false },
+      { name: "Medical Devices (shared)", legacy: true },
+      { name: "Shared Workstations", legacy: true }
+    ],
+    dealStage: "Discovery", dealSize: "$520K", closeDate: "Q4 2026",
+    champion: { name: "Dr. Maria Gonzalez", title: "CISO" },
+    buyer: { name: "Robert Williams", title: "CFO" },
+    evaluator: { name: "Kevin O'Brien", title: "IT Security Manager" },
+    competitor: null,
+    useCases: [
+      {
+        name: "Shared Workstation MFA",
+        relevance: "3,200+ shared workstations in clinical areas - nurses log in 15+ times per shift with shared credentials",
+        proof: "Similar hospital system reduced unauthorized access by 94% with tap-and-go MFA",
+        oneLiner: "Silverfort adds MFA to shared workstations without slowing down clinical workflows."
+      },
+      {
+        name: "Medical Device Identity Protection",
+        relevance: "400+ connected medical devices with default credentials and no MFA capability",
+        proof: "Healthcare network with 600+ devices achieved full coverage in 4 weeks - zero downtime",
+        oneLiner: "Your connected medical devices can be protected without touching a single device."
+      },
+      {
+        name: "HIPAA Compliance Acceleration",
+        relevance: "HIPAA requires access controls on all ePHI - current gaps in shared and legacy systems",
+        proof: "Regional hospital chain closed 100% of HIPAA identity gaps in 6 weeks with Silverfort",
+        oneLiner: "We close your HIPAA identity gaps in weeks, not months."
+      }
+    ],
+    objections: [
+      {
+        text: "Clinical workflows can't tolerate any friction - patient safety comes first",
+        why: "Healthcare MFA fear is about slowing down nurses during emergencies",
+        response: "Absolutely - patient safety is non-negotiable. Silverfort supports tap-and-go, proximity-based, and risk-adaptive MFA. In low-risk scenarios, it's invisible. It only challenges when behavior looks anomalous. Nurses at similar hospitals report zero workflow impact."
+      },
+      {
+        text: "Our medical devices are too old to support any security agents",
+        why: "Medical devices often run legacy OS and can't be modified - FDA regulations add complexity",
+        response: "We never touch the device. Silverfort protects at the authentication layer - the directory - so even a 15-year-old infusion pump gets MFA protection without any agent or modification."
+      }
+    ],
+    agendas: {
+      discovery: [
+        { time: "0:00", topic: "Intros + meeting goals" },
+        { time: "0:05", topic: "How do nurses authenticate on shared workstations today?" },
+        { time: "0:12", topic: "Walk me through your medical device security posture" },
+        { time: "0:20", topic: "HIPAA audit findings - where are the identity gaps?" },
+        { time: "0:25", topic: "Brief overview: how Silverfort works in healthcare" },
+        { time: "0:28", topic: "Next steps" }
+      ],
+      technical: [
+        { time: "0:00", topic: "Recap discovery" },
+        { time: "0:05", topic: "Demo: shared workstation MFA (tap-and-go)" },
+        { time: "0:15", topic: "Architecture: AD integration for medical devices" },
+        { time: "0:25", topic: "HIPAA compliance mapping" },
+        { time: "0:35", topic: "Q&A" },
+        { time: "0:42", topic: "POC scope" }
+      ],
+      executive: [
+        { time: "0:00", topic: "Healthcare identity attacks - the landscape" },
+        { time: "0:08", topic: "Huntsville's specific risk profile" },
+        { time: "0:15", topic: "ROI: compliance cost avoidance + breach prevention" },
+        { time: "0:22", topic: "Next steps" }
+      ],
+      poc: [
+        { time: "0:00", topic: "POC scope review" },
+        { time: "0:05", topic: "Results + coverage metrics" },
+        { time: "0:18", topic: "Rollout plan" },
+        { time: "0:25", topic: "Commercials" }
+      ],
+      renewal: [
+        { time: "0:00", topic: "Year in review" },
+        { time: "0:10", topic: "Compliance improvements" },
+        { time: "0:18", topic: "Expansion to additional facilities" },
+        { time: "0:25", topic: "Renewal terms" }
+      ]
+    }
+  },
+  singtel: {
+    name: "Singtel", industry: "Telecoms", size: "24,000", hq: "Singapore",
+    identityStack: [
+      { name: "Hybrid AD", legacy: false },
+      { name: "Multi-cloud (AWS/Azure)", legacy: false },
+      { name: "OT Networks", legacy: true }
+    ],
+    dealStage: "POC", dealSize: "$1.2M", closeDate: "Q3 2026",
+    champion: { name: "Wei Lin Tan", title: "Head of Cybersecurity" },
+    buyer: { name: "Rajesh Patel", title: "CTO" },
+    evaluator: { name: "Akiko Yamamoto", title: "Principal Security Engineer" },
+    competitor: "okta",
+    useCases: [
+      {
+        name: "Unified Identity Across Hybrid Environment",
+        relevance: "Singtel operates across on-prem AD, Azure AD, and AWS - identity policies are fragmented",
+        proof: "Global telco with similar hybrid achieved policy unification in 5 weeks",
+        oneLiner: "One identity policy across your entire infrastructure - on-prem, Azure, and AWS."
+      },
+      {
+        name: "OT Network Identity Protection",
+        relevance: "Telecom OT infrastructure manages cell towers and core network - uses service accounts with no MFA",
+        proof: "Major APAC telco protected 3,000+ OT service accounts with zero network disruption",
+        oneLiner: "Protect your OT infrastructure without deploying agents on sensitive network equipment."
+      },
+      {
+        name: "Third-Party Access Governance",
+        relevance: "200+ vendors and contractors with AD access - inconsistent offboarding creates persistent access risks",
+        proof: "Enterprise with 300+ third parties reduced unauthorized access incidents by 96%",
+        oneLiner: "Real-time visibility and MFA for every third-party accessing your network."
+      }
+    ],
+    objections: [
+      {
+        text: "We've already invested heavily in Okta for identity",
+        why: "Okta covers cloud SSO but doesn't protect legacy AD, service accounts, or OT",
+        response: "Okta is great for cloud SSO and your modern apps. But the identity threats Singtel faces - lateral movement in AD, service account compromise in OT - happen in layers Okta doesn't reach. Silverfort extends your Okta investment to cover the full identity surface."
+      },
+      {
+        text: "Our OT team won't approve any new technology in the core network",
+        why: "Telco OT teams are extremely conservative - any change risks service availability for millions",
+        response: "We get it - and that's why we sit outside the OT network entirely. Silverfort monitors and enforces at the AD/authentication layer, not on the devices themselves. Your OT infrastructure stays untouched."
+      }
+    ],
+    agendas: {
+      discovery: [
+        { time: "0:00", topic: "Intros" },
+        { time: "0:05", topic: "How does identity work across your hybrid environment today?" },
+        { time: "0:15", topic: "OT identity concerns" },
+        { time: "0:22", topic: "Third-party access management" },
+        { time: "0:28", topic: "Next steps" }
+      ],
+      technical: [
+        { time: "0:00", topic: "Architecture walkthrough" },
+        { time: "0:10", topic: "Demo: hybrid AD policy enforcement" },
+        { time: "0:20", topic: "OT protection approach" },
+        { time: "0:32", topic: "Integration with existing Okta deployment" },
+        { time: "0:40", topic: "POC expansion scope" }
+      ],
+      executive: [
+        { time: "0:00", topic: "Telecom identity threat landscape" },
+        { time: "0:08", topic: "Singtel's specific exposure" },
+        { time: "0:15", topic: "ROI + competitive advantage" },
+        { time: "0:22", topic: "Decision timeline" }
+      ],
+      poc: [
+        { time: "0:00", topic: "POC results review" },
+        { time: "0:10", topic: "Coverage achieved" },
+        { time: "0:20", topic: "Rollout plan" },
+        { time: "0:28", topic: "Commercial discussion" }
+      ],
+      renewal: [
+        { time: "0:00", topic: "Partnership review" },
+        { time: "0:10", topic: "Usage + impact metrics" },
+        { time: "0:18", topic: "Expansion to Optus / regional operations" },
+        { time: "0:25", topic: "Renewal" }
+      ]
+    }
+  },
+  ups: {
+    name: "UPS", industry: "Logistics / Supply Chain", size: "500,000+", hq: "Atlanta, GA",
+    identityStack: [
+      { name: "On-prem AD", legacy: false },
+      { name: "OT (sorting facilities)", legacy: true },
+      { name: "Massive Service Accounts", legacy: true }
+    ],
+    dealStage: "Negotiation", dealSize: "$2.8M", closeDate: "Q2 2026",
+    champion: { name: "Michael Torres", title: "Global CISO" },
+    buyer: { name: "Lisa Anderson", title: "SVP Technology" },
+    evaluator: { name: "Brian Mitchell", title: "Dir. Identity & Access Mgmt" },
+    competitor: "cyberark",
+    useCases: [
+      {
+        name: "Service Account Discovery & Protection",
+        relevance: "UPS has 45,000+ service accounts across sorting and logistics systems - many undocumented",
+        proof: "Global logistics company discovered 12,000 unknown service accounts and secured 100% in 8 weeks",
+        oneLiner: "We'll show you every service account you didn't know you had - and protect all of them."
+      },
+      {
+        name: "OT Identity for Sorting Facilities",
+        relevance: "Automated sorting facilities use legacy SCADA with default credentials - a ransomware entry point",
+        proof: "Manufacturing company with similar OT footprint prevented 3 ransomware attempts in first month",
+        oneLiner: "Your sorting facilities get identity protection without any operational disruption."
+      },
+      {
+        name: "Lateral Movement Prevention at Scale",
+        relevance: "With 500K+ employees, a single compromised credential can traverse the entire network",
+        proof: "Enterprise of similar scale reduced lateral movement risk by 97% within 60 days",
+        oneLiner: "Stop attackers from moving laterally - even if they have valid credentials."
+      }
+    ],
+    objections: [
+      {
+        text: "CyberArk handles our privileged access management",
+        why: "CyberArk covers PAM for known privileged accounts but doesn't discover unknown service accounts or cover non-privileged lateral movement",
+        response: "CyberArk is the gold standard for vaulting known privileged accounts. The gap is the other 40,000 service accounts that aren't in CyberArk's vault - and the non-privileged accounts attackers actually use for lateral movement. We discover and protect what CyberArk can't see."
+      },
+      {
+        text: "Deploying anything at our scale takes 18+ months",
+        why: "UPS-scale deployments are genuinely complex - they've been burned by long rollouts before",
+        response: "Because Silverfort is agentless and integrates at the directory level, deployment at 500K+ endpoints doesn't require touching each endpoint. Our largest deployments - comparable scale - went live in 12 weeks, not 18 months."
+      }
+    ],
+    agendas: {
+      discovery: [
+        { time: "0:00", topic: "Intros" },
+        { time: "0:05", topic: "Service account landscape - what's known, what's unknown?" },
+        { time: "0:12", topic: "OT security posture in sorting facilities" },
+        { time: "0:20", topic: "Lateral movement concerns at scale" },
+        { time: "0:25", topic: "Silverfort overview" },
+        { time: "0:28", topic: "Next steps" }
+      ],
+      technical: [
+        { time: "0:00", topic: "Recap" },
+        { time: "0:05", topic: "Demo: service account discovery" },
+        { time: "0:15", topic: "Architecture at UPS scale" },
+        { time: "0:25", topic: "CyberArk integration" },
+        { time: "0:35", topic: "POC scope" }
+      ],
+      executive: [
+        { time: "0:00", topic: "Ransomware risk in logistics" },
+        { time: "0:08", topic: "UPS-specific threat model" },
+        { time: "0:15", topic: "ROI: breach cost avoidance" },
+        { time: "0:22", topic: "Deployment timeline" },
+        { time: "0:25", topic: "Decision process" }
+      ],
+      poc: [
+        { time: "0:00", topic: "POC results" },
+        { time: "0:10", topic: "Service accounts discovered" },
+        { time: "0:18", topic: "Rollout plan" },
+        { time: "0:25", topic: "Commercials" }
+      ],
+      renewal: [
+        { time: "0:00", topic: "Year in review" },
+        { time: "0:08", topic: "Incidents prevented" },
+        { time: "0:15", topic: "Expansion to international ops" },
+        { time: "0:22", topic: "Renewal" }
+      ]
+    }
+  },
+  thales: {
+    name: "Thales", industry: "Defense / Aerospace", size: "81,000", hq: "Paris, France",
+    identityStack: [
+      { name: "On-prem AD", legacy: false },
+      { name: "Classified Environments", legacy: true },
+      { name: "Air-gapped Networks", legacy: true }
+    ],
+    dealStage: "Discovery", dealSize: "$1.5M", closeDate: "Q1 2027",
+    champion: { name: "Pierre Dubois", title: "Group CISO" },
+    buyer: { name: "Isabelle Martin", title: "SVP Digital Security" },
+    evaluator: { name: "Klaus Weber", title: "Lead Security Architect" },
+    competitor: null,
+    useCases: [
+      {
+        name: "Air-Gapped Network Identity",
+        relevance: "Classified R&D environments are air-gapped but still use AD - no cloud-based security possible",
+        proof: "Defense contractor with similar classified environments achieved full identity coverage in air-gapped networks",
+        oneLiner: "Silverfort works fully on-premises - no cloud dependency for your classified environments."
+      },
+      {
+        name: "Cross-Domain Identity Governance",
+        relevance: "81,000 employees across defense, aerospace, and transport - identity policies vary by domain and clearance level",
+        proof: "Global defense organization unified identity policy across 50+ domains in 6 weeks",
+        oneLiner: "Unified identity policy across all your domains - from classified to commercial."
+      },
+      {
+        name: "Privileged Access in Manufacturing",
+        relevance: "Defense manufacturing floors use shared privileged accounts for SCADA and CNC systems",
+        proof: "Aerospace manufacturer secured 100% of shared manufacturing accounts without workflow disruption",
+        oneLiner: "Secure shared accounts on the manufacturing floor without slowing production."
+      }
+    ],
+    objections: [
+      {
+        text: "Nothing cloud-based is approved for our classified environments",
+        why: "Defense classification requirements genuinely prohibit cloud connectivity for certain networks",
+        response: "Silverfort has a fully on-premises deployment option - no cloud callback, no telemetry leaving your network. It's deployed in classified environments that meet the same standards Thales works under."
+      },
+      {
+        text: "We need FedRAMP / NATO certification for any new security tool",
+        why: "Compliance requirements in defense are real and non-negotiable",
+        response: "We're actively working on government certifications and already deploy in defense organizations globally. Let's connect you with our compliance team to walk through our current certifications and timeline for the ones you specifically need."
+      }
+    ],
+    agendas: {
+      discovery: [
+        { time: "0:00", topic: "Intros + classification protocols for this discussion" },
+        { time: "0:05", topic: "Identity challenges in classified environments" },
+        { time: "0:15", topic: "Cross-domain governance needs" },
+        { time: "0:22", topic: "Silverfort's on-premises capabilities" },
+        { time: "0:28", topic: "Next steps + compliance requirements" }
+      ],
+      technical: [
+        { time: "0:00", topic: "Architecture: on-premises deployment" },
+        { time: "0:10", topic: "Air-gapped network demo" },
+        { time: "0:20", topic: "Cross-domain policy engine" },
+        { time: "0:30", topic: "Certification discussion" },
+        { time: "0:40", topic: "POC scope" }
+      ],
+      executive: [
+        { time: "0:00", topic: "Defense sector identity threats" },
+        { time: "0:08", topic: "Thales-specific risk" },
+        { time: "0:15", topic: "ROI + compliance value" },
+        { time: "0:22", topic: "Next steps" }
+      ],
+      poc: [
+        { time: "0:00", topic: "POC results" },
+        { time: "0:10", topic: "Classification compliance" },
+        { time: "0:18", topic: "Rollout" },
+        { time: "0:25", topic: "Commercials" }
+      ],
+      renewal: [
+        { time: "0:00", topic: "Deployment review" },
+        { time: "0:10", topic: "Coverage expansion" },
+        { time: "0:18", topic: "Renewal" }
+      ]
+    }
+  },
+  gm: {
+    name: "General Motors", industry: "Automotive / Manufacturing", size: "167,000", hq: "Detroit, MI",
+    identityStack: [
+      { name: "Hybrid AD", legacy: false },
+      { name: "Factory OT (SCADA)", legacy: true },
+      { name: "Azure AD", legacy: false }
+    ],
+    dealStage: "Technical Evaluation", dealSize: "$1.8M", closeDate: "Q3 2026",
+    champion: { name: "Jennifer Liu", title: "VP Cybersecurity" },
+    buyer: { name: "Mark Thompson", title: "CIO" },
+    evaluator: { name: "Carlos Reyes", title: "Dir. OT Security" },
+    competitor: "okta",
+    useCases: [
+      {
+        name: "Factory Floor Identity Protection",
+        relevance: "GM operates 100+ manufacturing plants - OT systems use shared credentials with no MFA",
+        proof: "Global manufacturer with 80+ plants achieved full OT identity coverage in 10 weeks",
+        oneLiner: "Protect every factory floor identity - without deploying anything on the production line."
+      },
+      {
+        name: "Hybrid Identity Consolidation",
+        relevance: "GM's IT and OT environments have separate identity systems - attackers exploit the gap",
+        proof: "Automotive company unified IT/OT identity in 6 weeks, blocked 12 lateral movement attempts in month one",
+        oneLiner: "Close the IT/OT identity gap that attackers are counting on."
+      },
+      {
+        name: "Supply Chain Partner Access",
+        relevance: "Thousands of suppliers connect to GM systems - each is a potential attack vector",
+        proof: "Manufacturer with 2,000+ suppliers reduced third-party identity incidents by 89%",
+        oneLiner: "Every supplier connection gets the same identity protection as your internal users."
+      }
+    ],
+    objections: [
+      {
+        text: "Okta handles our cloud identity - why do we need another identity product?",
+        why: "GM uses Okta for cloud apps but factory OT and legacy AD aren't covered",
+        response: "Okta is your identity layer for cloud. But your factories, your OT systems, your legacy AD - those are the identity surfaces attackers actually target. Silverfort extends Okta's reach to cover everything Okta can't."
+      },
+      {
+        text: "Our factory uptime is sacred - zero tolerance for disruption",
+        why: "Manufacturing downtime costs $22K/minute at GM's scale",
+        response: "We never touch the factory systems. Silverfort integrates at the AD/authentication layer - if Silverfort ever went down, your factories wouldn't even notice. Zero agents, zero proxies, zero impact on OT uptime."
+      }
+    ],
+    agendas: {
+      discovery: [
+        { time: "0:00", topic: "Intros" },
+        { time: "0:05", topic: "IT vs. OT identity - where are the gaps?" },
+        { time: "0:12", topic: "Factory floor security challenges" },
+        { time: "0:20", topic: "Supply chain partner access" },
+        { time: "0:25", topic: "Overview" },
+        { time: "0:28", topic: "Next steps" }
+      ],
+      technical: [
+        { time: "0:00", topic: "Architecture overview" },
+        { time: "0:08", topic: "Demo: OT identity protection" },
+        { time: "0:18", topic: "Hybrid AD integration" },
+        { time: "0:28", topic: "Okta coexistence" },
+        { time: "0:38", topic: "POC plan" }
+      ],
+      executive: [
+        { time: "0:00", topic: "Manufacturing cyberattack trends" },
+        { time: "0:08", topic: "GM's risk profile" },
+        { time: "0:15", topic: "ROI: downtime prevention value" },
+        { time: "0:22", topic: "Next steps" }
+      ],
+      poc: [
+        { time: "0:00", topic: "POC results" },
+        { time: "0:10", topic: "Factory coverage" },
+        { time: "0:18", topic: "Rollout" },
+        { time: "0:25", topic: "Commercials" }
+      ],
+      renewal: [
+        { time: "0:00", topic: "Year review" },
+        { time: "0:10", topic: "Expansion" },
+        { time: "0:18", topic: "Renewal" }
+      ]
+    }
+  },
+  encora: {
+    name: "Encora", industry: "Tech Services", size: "7,500", hq: "Scottsdale, AZ",
+    identityStack: [
+      { name: "Azure AD", legacy: false },
+      { name: "Developer Environments", legacy: false },
+      { name: "GitHub/GitLab", legacy: false }
+    ],
+    dealStage: "Discovery", dealSize: "$280K", closeDate: "Q4 2026",
+    champion: { name: "Ana Ramirez", title: "Head of Security" },
+    buyer: { name: "Tom Nguyen", title: "VP Technology" },
+    evaluator: { name: "Derek Collins", title: "Security Engineer" },
+    competitor: "crowdstrike",
+    useCases: [
+      {
+        name: "Developer Environment Protection",
+        relevance: "7,500 developers with admin access to client environments - a compromise affects dozens of clients",
+        proof: "Tech services firm with 5,000+ devs reduced credential-related incidents by 78%",
+        oneLiner: "Protect every developer identity - especially the ones with admin access to your clients."
+      },
+      {
+        name: "CI/CD Pipeline Identity Security",
+        relevance: "Service accounts in CI/CD pipelines have broad access - perfect supply-chain attack vector",
+        proof: "Software company secured 100% of CI/CD service accounts, prevented 2 supply-chain attempts",
+        oneLiner: "Secure your CI/CD pipeline identities before they become your clients' problem."
+      },
+      {
+        name: "Client Isolation Assurance",
+        relevance: "Multi-tenant environments need strict identity boundaries - current controls rely on network segmentation only",
+        proof: "MSP with similar multi-tenant model achieved identity-based isolation in addition to network controls",
+        oneLiner: "Add identity-level isolation to your client environments - beyond network segmentation."
+      }
+    ],
+    objections: [
+      {
+        text: "CrowdStrike already monitors our endpoints",
+        why: "EDR covers endpoint threats but not identity-based attacks or service account compromise",
+        response: "CrowdStrike catches malware and endpoint anomalies. What it doesn't see: a valid service account being used to move from your dev environment into a client's production system. Silverfort protects the identity layer that EDR can't reach."
+      },
+      {
+        text: "Our developers will push back on any new security friction",
+        why: "Developer experience is critical for retention at tech services firms",
+        response: "Silverfort is invisible during normal work. It only challenges when behavior deviates from baseline - like accessing a client environment from an unusual location. For 95% of developer actions, they'll never know it's there."
+      }
+    ],
+    agendas: {
+      discovery: [
+        { time: "0:00", topic: "Intros" },
+        { time: "0:05", topic: "Developer access patterns - what does a typical day look like?" },
+        { time: "0:12", topic: "CI/CD security posture" },
+        { time: "0:20", topic: "Client isolation concerns" },
+        { time: "0:25", topic: "Overview" },
+        { time: "0:28", topic: "Next steps" }
+      ],
+      technical: [
+        { time: "0:00", topic: "Architecture" },
+        { time: "0:08", topic: "Demo: developer environment protection" },
+        { time: "0:18", topic: "CI/CD integration" },
+        { time: "0:28", topic: "Azure AD deep dive" },
+        { time: "0:38", topic: "POC" }
+      ],
+      executive: [
+        { time: "0:00", topic: "Supply chain attack risk" },
+        { time: "0:08", topic: "Encora's exposure" },
+        { time: "0:15", topic: "ROI: client trust + compliance" },
+        { time: "0:22", topic: "Next steps" }
+      ],
+      poc: [
+        { time: "0:00", topic: "POC results" },
+        { time: "0:10", topic: "Coverage" },
+        { time: "0:18", topic: "Rollout" },
+        { time: "0:25", topic: "Commercials" }
+      ],
+      renewal: [
+        { time: "0:00", topic: "Review" },
+        { time: "0:10", topic: "Expansion" },
+        { time: "0:18", topic: "Renewal" }
+      ]
+    }
+  },
+  nhs: {
+    name: "NHS Blood and Transplant", industry: "Healthcare / Government", size: "6,200", hq: "Bristol, UK",
+    identityStack: [
+      { name: "On-prem AD", legacy: false },
+      { name: "Legacy NHS Systems", legacy: true },
+      { name: "Privileged Access (labs)", legacy: true }
+    ],
+    dealStage: "Technical Evaluation", dealSize: "$440K", closeDate: "Q3 2026",
+    champion: { name: "Sarah Davies", title: "Head of Cyber Security" },
+    buyer: { name: "James Thompson", title: "Director of Digital" },
+    evaluator: { name: "Priya Sharma", title: "Security Architect" },
+    competitor: null,
+    useCases: [
+      {
+        name: "Legacy NHS System Protection",
+        relevance: "Critical blood supply systems run on legacy infrastructure with aging authentication",
+        proof: "UK healthcare organization protected 100% of legacy clinical systems in 5 weeks",
+        oneLiner: "Protect your blood supply chain systems without any changes to the legacy infrastructure."
+      },
+      {
+        name: "Privileged Lab Access Control",
+        relevance: "Laboratory systems processing blood donations require strict access control - current shared accounts create audit gaps",
+        proof: "Clinical laboratory eliminated 100% of shared privileged accounts while maintaining workflow speed",
+        oneLiner: "Every lab access is individually authenticated - full audit trail, zero workflow friction."
+      },
+      {
+        name: "NHS Cyber Essentials Plus Compliance",
+        relevance: "NHS organizations must meet Cyber Essentials Plus + DSPT - identity controls are a key requirement",
+        proof: "NHS Trust achieved Cyber Essentials Plus certification with Silverfort as the identity control layer",
+        oneLiner: "Meet Cyber Essentials Plus identity requirements with a single deployment."
+      }
+    ],
+    objections: [
+      {
+        text: "Our legacy NHS systems absolutely cannot be modified - lives depend on them",
+        why: "Blood supply systems are genuinely life-critical - any change requires extensive validation",
+        response: "We understand - blood supply is life-critical. Silverfort integrates at the Active Directory layer, not at the application layer. Your legacy systems continue operating exactly as they do today. The protection happens before the authentication request even reaches the system."
+      },
+      {
+        text: "We need to go through NHS Digital procurement - this takes 6+ months",
+        why: "UK public sector procurement is genuinely slow and bureaucratic",
+        response: "We work with NHS organizations regularly and understand the procurement process. We can start with a scoped POC under existing procurement thresholds while the full procurement runs in parallel. Several NHS Trusts have followed this path successfully."
+      }
+    ],
+    agendas: {
+      discovery: [
+        { time: "0:00", topic: "Intros" },
+        { time: "0:05", topic: "Legacy system landscape - what's critical?" },
+        { time: "0:12", topic: "Lab access control challenges" },
+        { time: "0:20", topic: "Compliance requirements (DSPT, Cyber Essentials)" },
+        { time: "0:25", topic: "Silverfort in NHS environments" },
+        { time: "0:28", topic: "Next steps" }
+      ],
+      technical: [
+        { time: "0:00", topic: "Architecture for NHS environment" },
+        { time: "0:10", topic: "Demo: legacy system protection" },
+        { time: "0:20", topic: "Lab access controls" },
+        { time: "0:30", topic: "Compliance mapping" },
+        { time: "0:40", topic: "POC scope" }
+      ],
+      executive: [
+        { time: "0:00", topic: "NHS cyber threat landscape" },
+        { time: "0:08", topic: "NHSBT-specific risks" },
+        { time: "0:15", topic: "ROI + compliance acceleration" },
+        { time: "0:22", topic: "Procurement path" }
+      ],
+      poc: [
+        { time: "0:00", topic: "POC results" },
+        { time: "0:10", topic: "Coverage" },
+        { time: "0:18", topic: "Full rollout" },
+        { time: "0:25", topic: "Commercials" }
+      ],
+      renewal: [
+        { time: "0:00", topic: "Year review" },
+        { time: "0:10", topic: "Compliance maintained" },
+        { time: "0:18", topic: "Expansion" },
+        { time: "0:25", topic: "Renewal" }
+      ]
+    }
+  }
+};
+
+// Competitive data
+const competitiveData = {
+  crowdstrike: {
+    name: "CrowdStrike",
+    comparison: [
+      { dimension: "Identity Protection", sf: "Full identity surface - AD, cloud, service accounts, OT", comp: "Endpoint-focused - identity as add-on to Falcon", winner: "sf" },
+      { dimension: "Deployment", sf: "Agentless - no endpoint agents required", comp: "Requires Falcon agent on every endpoint", winner: "sf" },
+      { dimension: "Service Accounts", sf: "Full discovery + protection of all service accounts", comp: "Limited visibility into non-human identities", winner: "sf" },
+      { dimension: "Legacy Systems", sf: "Protects legacy without agents or code changes", comp: "Requires agent-compatible OS", winner: "sf" },
+      { dimension: "EDR / Endpoint", sf: "Not an EDR - focuses on identity layer", comp: "Best-in-class EDR + endpoint protection", winner: "comp" }
+    ],
+    keyDiff: "Silverfort requires no agents, no proxies, and no code changes. CrowdStrike's identity product requires the Falcon agent everywhere.",
+    objectionResponses: [
+      { theyAsk: "CrowdStrike already covers identity with Falcon Identity", youSay: "Falcon Identity extends CrowdStrike's endpoint view to identity. Silverfort was built identity-first - we see service accounts, legacy systems, and auth protocols that Falcon can't reach without an agent." },
+      { theyAsk: "Why not consolidate on one vendor (CrowdStrike)?", youSay: "Consolidation makes sense when coverage is equivalent. For identity, CrowdStrike covers what their agent can see. The 40% of your identity surface without agents - service accounts, legacy systems, OT - needs purpose-built identity protection." }
+    ]
+  },
+  okta: {
+    name: "Okta",
+    comparison: [
+      { dimension: "Coverage", sf: "All authentication - cloud, on-prem, legacy, OT", comp: "Cloud and modern apps (SAML/OIDC)", winner: "sf" },
+      { dimension: "Legacy / On-prem AD", sf: "Full protection for on-prem AD authentication", comp: "Limited - requires cloud proxy for on-prem", winner: "sf" },
+      { dimension: "Service Accounts", sf: "Discovery + protection of all service accounts", comp: "Not designed for non-human identities", winner: "sf" },
+      { dimension: "Cloud SSO", sf: "Not a primary SSO - focuses on security layer", comp: "Best-in-class SSO for cloud applications", winner: "comp" },
+      { dimension: "MFA for Legacy", sf: "MFA for any system that authenticates via AD - including legacy", comp: "Requires app integration or cloud proxy", winner: "sf" }
+    ],
+    keyDiff: "Okta secures cloud identity. Silverfort secures everything Okta can't reach - on-prem AD, legacy systems, service accounts, and OT.",
+    objectionResponses: [
+      { theyAsk: "We already have Okta for identity - isn't this redundant?", youSay: "Okta is your identity layer for cloud and modern apps. Silverfort covers the identity surface Okta was never designed for - on-prem AD authentication, legacy systems, service accounts, and OT. We extend your Okta investment, not replace it." },
+      { theyAsk: "Can't Okta's Advanced Server Access cover on-prem?", youSay: "ASA covers SSH/RDP for servers you can install the agent on. It doesn't cover legacy systems, service accounts, or AD-based authentication for applications that can't run agents." }
+    ]
+  },
+  cyberark: {
+    name: "CyberArk",
+    comparison: [
+      { dimension: "Scope", sf: "All identities - human and non-human, privileged and regular", comp: "Privileged accounts - vaulting and session management", winner: "sf" },
+      { dimension: "Service Account Discovery", sf: "Auto-discovers all service accounts across AD", comp: "Requires manual onboarding of known accounts", winner: "sf" },
+      { dimension: "Deployment Complexity", sf: "Agentless - integrates at AD layer", comp: "Requires vault, agents, proxies, connectors", winner: "sf" },
+      { dimension: "PAM / Vaulting", sf: "Not a PAM vault - focuses on authentication security", comp: "Gold standard for privileged credential vaulting", winner: "comp" },
+      { dimension: "Lateral Movement", sf: "Prevents lateral movement across all account types", comp: "Reduces risk for vaulted privileged accounts only", winner: "sf" }
+    ],
+    keyDiff: "CyberArk vaults known privileged accounts. Silverfort discovers and protects the thousands of unknown service accounts CyberArk can't see.",
+    objectionResponses: [
+      { theyAsk: "CyberArk already handles our privileged access", youSay: "CyberArk vaults and rotates the privileged accounts you know about. The challenge is the thousands of service accounts you don't know about - the ones not in CyberArk's vault. Silverfort discovers those and adds protection without requiring vault onboarding." },
+      { theyAsk: "Why not just expand CyberArk to cover service accounts?", youSay: "Onboarding 45,000 service accounts into CyberArk would take years and require application changes for each one. Silverfort protects them at the authentication layer - no onboarding, no app changes, coverage in weeks." }
+    ]
+  },
+  ping: {
+    name: "Ping Identity",
+    comparison: [
+      { dimension: "Coverage", sf: "All authentication - AD, cloud, legacy, OT", comp: "Federation and SSO for modern applications", winner: "sf" },
+      { dimension: "Legacy Systems", sf: "MFA for any AD-authenticating system", comp: "Requires integration per application", winner: "sf" },
+      { dimension: "Service Accounts", sf: "Full discovery and protection", comp: "Not designed for non-human identities", winner: "sf" },
+      { dimension: "Federation / SSO", sf: "Not a federation platform", comp: "Strong federation and SSO capabilities", winner: "comp" },
+      { dimension: "Deployment", sf: "Agentless - directory-level integration", comp: "Requires per-app integration", winner: "sf" }
+    ],
+    keyDiff: "Ping Identity handles federation and modern SSO. Silverfort protects the identity surface that doesn't support modern protocols.",
+    objectionResponses: [
+      { theyAsk: "Ping already handles our identity federation", youSay: "Ping is excellent for modern federation (SAML, OIDC). Silverfort covers authentications that don't use modern protocols - NTLM, Kerberos, LDAP - which are the ones attackers actually exploit." },
+      { theyAsk: "Can't we extend Ping to cover legacy?", youSay: "Ping's approach requires application-level integration. For legacy systems that can't be modified, you need a solution that works at the directory layer - no app changes required." }
+    ]
+  }
+};
+
+// ═══════════════════════════════════════════════
+// CAROUSEL
+// ═══════════════════════════════════════════════
+let currentSlide = 0;
+const totalSlides = 4;
+
+function initCarousel() {
+  const dotsContainer = document.getElementById('carouselDots');
+  for (let i = 0; i < totalSlides; i++) {
+    const dot = document.createElement('button');
+    dot.className = 'carousel-dot' + (i === 0 ? ' active' : '');
+    dot.onclick = () => goToSlide(i);
+    dotsContainer.appendChild(dot);
+  }
+}
+
+function goToSlide(index) {
+  currentSlide = index;
+  document.getElementById('carouselTrack').style.transform = `translateX(-${index * 100}%)`;
+  document.querySelectorAll('.carousel-dot').forEach((dot, i) => {
+    dot.className = 'carousel-dot' + (i === index ? ' active' : '');
+  });
+  document.querySelectorAll('.carousel-tab').forEach((tab, i) => {
+    tab.className = 'carousel-tab' + (i === index ? ' active' : '');
+  });
+}
+
+function moveCarousel(dir) {
+  let next = currentSlide + dir;
+  if (next < 0) next = totalSlides - 1;
+  if (next >= totalSlides) next = 0;
+  goToSlide(next);
+}
+
+// ═══════════════════════════════════════════════
+// AE VIEW - BRIEF GENERATION
+// ═══════════════════════════════════════════════
+function generateBrief() {
+  var accountKey = document.getElementById('accountSelect').value;
+  var meetingType = document.getElementById('meetingType').value;
+  var competitorOverride = document.getElementById('competitorSelect').value;
+  var account = customers[accountKey];
+  if (!account) { alert('Please select an account'); return; }
+
+  // Store for download
+  window._lastBrief = { account: account, accountKey: accountKey, meetingType: meetingType, competitorOverride: competitorOverride };
+
+  // Hide previous brief
+  document.getElementById('briefOutput').classList.remove('visible');
+
+  // Show enrichment animation
+  var enrichBar = document.getElementById('enrichmentBar');
+  enrichBar.classList.add('active');
+  var sources = enrichBar.querySelectorAll('.enrichment-source');
+  sources.forEach(function(s) { s.classList.remove('loaded'); });
+
+  // Animate sources loading one by one
+  var delays = [300, 600, 1000, 1400, 1700, 2000, 2300];
+  sources.forEach(function(source, i) {
+    setTimeout(function() { source.classList.add('loaded'); }, delays[i]);
+  });
+
+  // After animation: render and show the full brief
+  setTimeout(function() {
+    try { renderBrief(account, meetingType, competitorOverride); } catch(e) { console.error(e); }
+    document.getElementById('briefAccountName').textContent = account.name;
+    document.getElementById('briefMeta').textContent = meetingType.charAt(0).toUpperCase() + meetingType.slice(1) + ' Meeting  |  ' + new Date().toLocaleDateString('en-US', {month:'long', day:'numeric', year:'numeric'});
+    document.getElementById('briefOutput').classList.add('visible');
+    document.getElementById('feedbackSection').classList.add('visible');
+    document.getElementById('briefOutput').scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }, 2800);
+}
+
+function renderBrief(account, meetingType, competitorOverride) {
+  // Determine competitor
+  let comp = competitorOverride === 'auto' ? account.competitor : (competitorOverride === 'none' ? null : competitorOverride);
+
+  // Section 1: Account Snapshot
+  document.getElementById('snapshot-body').innerHTML = `
+    <div class="snapshot-grid">
+      <div class="snapshot-item"><div class="label">Company</div><div class="value">${account.name}</div></div>
+      <div class="snapshot-item"><div class="label">Industry</div><div class="value">${account.industry}</div></div>
+      <div class="snapshot-item"><div class="label">Employees</div><div class="value">${account.size}</div></div>
+      <div class="snapshot-item"><div class="label">HQ</div><div class="value">${account.hq}</div></div>
+    </div>
+    <div style="font-size:12px;font-weight:600;color:var(--text-secondary);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.5px;">Identity Stack</div>
+    <div class="identity-tags">
+      ${account.identityStack.map(t => `<span class="identity-tag${t.legacy ? ' legacy' : ''}">${t.name}${t.legacy ? ' (legacy)' : ''}</span>`).join('')}
+    </div>
+    <div class="snapshot-grid" style="margin-top:12px;">
+      <div class="snapshot-item"><div class="label">Deal Stage</div><div class="value">${account.dealStage}</div></div>
+      <div class="snapshot-item"><div class="label">Deal Size</div><div class="value">${account.dealSize}</div></div>
+      <div class="snapshot-item"><div class="label">Close Target</div><div class="value">${account.closeDate}</div></div>
+      <div class="snapshot-item"><div class="label">Meeting Type</div><div class="value" style="text-transform:capitalize;">${meetingType}</div></div>
+    </div>
+    <div class="stakeholders">
+      <div class="stakeholder"><div class="role">Champion</div><div class="name">${account.champion.name}</div><div class="title">${account.champion.title}</div></div>
+      <div class="stakeholder"><div class="role">Economic Buyer</div><div class="name">${account.buyer.name}</div><div class="title">${account.buyer.title}</div></div>
+      <div class="stakeholder"><div class="role">Technical Evaluator</div><div class="name">${account.evaluator.name}</div><div class="title">${account.evaluator.title}</div></div>
+    </div>
+    <div style="margin-top:12px;">
+      <span class="source-tag">Salesforce</span>
+      <span class="source-tag">ZoomInfo</span>
+    </div>
+  `;
+
+  // Section 2: Use Cases
+  document.getElementById('usecases-body').innerHTML = `
+    <div class="use-case-cards">
+      ${account.useCases.map((uc, i) => `
+        <div class="use-case-card">
+          <span class="rank">${i + 1}</span>
+          <h5>${uc.name}</h5>
+          <div class="relevance">${uc.relevance}</div>
+          <div class="proof">${uc.proof}</div>
+          <div class="one-liner">"${uc.oneLiner}"</div>
+        </div>
+      `).join('')}
+    </div>
+    <div style="margin-top:12px;">
+      <span class="source-tag">Atlassian (Jira, Confluence)</span>
+      <span class="source-tag">Salesforce (similar deals)</span>
+    </div>
+  `;
+
+  // Section 3: Competitive Edge
+  const compSection = document.getElementById('section-competitive');
+  if (comp && competitiveData[comp]) {
+    compSection.style.display = 'block';
+    const cd = competitiveData[comp];
+    document.getElementById('competitive-body').innerHTML = `
+      <div class="table-scroll-wrapper"><table class="comp-table">
+        <thead><tr><th>Dimension</th><th>Silverfort</th><th>${cd.name}</th></tr></thead>
+        <tbody>
+          ${cd.comparison.map(row => `
+            <tr class="${row.winner === 'sf' ? 'comp-highlight' : ''}">
+              <td style="font-weight:600;">${row.dimension}</td>
+              <td class="${row.winner === 'sf' ? 'win' : ''}">${row.sf}</td>
+              <td class="${row.winner === 'comp' ? 'win' : 'lose'}">${row.comp}</td>
+            </tr>
+          `).join('')}
+        </tbody>
+      </table>
+      <div style="padding:16px;background:rgba(0,184,148,0.06);border-radius:var(--radius-sm);margin:16px 0;">
+        <div style="font-size:12px;font-weight:600;color:var(--accent-success);margin-bottom:4px;">KEY DIFFERENTIATOR</div>
+        <div style="font-size:14px;">${cd.keyDiff}</div>
+      </div>
+      <div style="margin-top:12px;">
+        <span class="source-tag">Atlassian (Jira, Confluence)</span>
+        <span class="source-tag">Gong (what worked)</span>
+      </div>
+    `;
+    // Battle Cards section
+    document.getElementById('section-battlecards').style.display = 'block';
+    document.getElementById('battlecards-body').innerHTML = `
+      <div style="font-size:13px;font-weight:600;margin-bottom:16px;color:var(--text-secondary);">If they say X, you say Y</div>
+      ${cd.objectionResponses.map(or => `
+        <div style="margin-bottom:12px;padding:16px;background:var(--bg-elevated);border-radius:var(--radius-sm);border-left:3px solid var(--accent-warning);">
+          <div style="font-size:12px;color:var(--accent-warning);font-weight:600;margin-bottom:6px;">THEY SAY: "${or.theyAsk}"</div>
+          <div style="font-size:13px;color:var(--text-primary);line-height:1.5;">YOU SAY: "${or.youSay}"</div>
+        </div>
+      `).join('')}
+      <div style="margin-top:12px;">
+        <span class="source-tag">Gong (winning patterns)</span>
+        <span class="source-tag">Atlassian (Confluence)</span>
+      </div>
+    `;
+  } else {
+    compSection.style.display = 'none';
+    document.getElementById('section-battlecards').style.display = 'none';
+  }
+
+  // Section 4: Objections
+  document.getElementById('objections-body').innerHTML = `
+    ${account.objections.map(obj => `
+      <div class="objection-card">
+        <div class="objection-text">"${obj.text}"</div>
+        <div class="why">${obj.why}</div>
+        <div class="framework">Acknowledge → Reframe → Evidence</div>
+        <div class="response">${obj.response}</div>
+      </div>
+    `).join('')}
+    <div style="margin-top:8px;">
+      <span class="source-tag">Gong</span>
+      <span class="source-tag">Atlassian (Jira, Confluence)</span>
+    </div>
+  `;
+
+  // Section 5: Agenda
+  const agendas = account.agendas;
+  const currentAgenda = agendas[meetingType] || agendas.discovery;
+  const agendaTypes = Object.keys(agendas);
+
+  console.log('Rendering agenda, meetingType:', meetingType, 'items:', currentAgenda ? currentAgenda.length : 0);
+  document.getElementById('agenda-body').innerHTML = `
+    <div class="agenda-tabs">
+      ${agendaTypes.map(t => `<button class="agenda-tab${t === meetingType ? ' active' : ''}" onclick="switchAgenda('${window._lastBrief.accountKey}', '${t}', this)">${t.charAt(0).toUpperCase() + t.slice(1)}</button>`).join('')}
+    </div>
+    <div class="agenda-items" id="agendaItems">
+      ${(currentAgenda || []).map(item => `
+        <div class="agenda-item">
+          <span class="time">${item.time}</span>
+          <span class="topic">${item.topic}</span>
+        </div>
+      `).join('')}
+    </div>
+    <div style="margin-top:12px;">
+      <span class="source-tag">Gong (top-performing meeting structures)</span>
+    </div>
+  `;
+
+  // Populate "what landed" in feedback
+  const whatLanded = document.getElementById('whatLanded');
+  whatLanded.innerHTML = account.useCases.map(uc => `<option>${uc.name}</option>`).join('');
+}
+
+function switchAgenda(accountKey, type, btn) {
+  const account = customers[accountKey];
+  const agenda = account.agendas[type];
+  document.querySelectorAll('.agenda-tab').forEach(t => t.classList.remove('active'));
+  btn.classList.add('active');
+  document.getElementById('agendaItems').innerHTML = agenda.map(item => `
+    <div class="agenda-item">
+      <span class="time">${item.time}</span>
+      <span class="topic">${item.topic}</span>
+    </div>
+  `).join('');
+}
+
+function toggleAllSections(expand) {
+  document.querySelectorAll('#briefOutput .brief-section').forEach(function(section) {
+    if (section.style.display === 'none') return; // skip hidden sections
+    if (expand) {
+      section.classList.add('open');
+    } else {
+      section.classList.remove('open');
+    }
+  });
+}
+
+function toggleSection(id) {
+  document.getElementById(id).classList.toggle('open');
+}
+
+// confirmBrief removed — feedback now shows automatically after brief render
+
+function submitFeedback() {
+  var section = document.getElementById('feedbackSection');
+  section.innerHTML = '<div style="text-align:center;padding:32px 20px;">' +
+    '<div style="font-size:28px;margin-bottom:12px;">\u2705</div>' +
+    '<div style="font-size:16px;font-weight:700;color:var(--accent-primary);margin-bottom:6px;">Feedback received</div>' +
+    '<div style="font-size:13px;color:var(--text-secondary);">Your next brief will be sharper. Thank you.</div>' +
+    '</div>';
+}
+
+function downloadBrief() {
+  if (!window._lastBrief) { alert('Generate a brief first'); return; }
+  var account = window._lastBrief.account;
+  var meetingType = window._lastBrief.meetingType;
+  var competitorOverride = window._lastBrief.competitorOverride;
+
+  const { jsPDF } = window.jspdf;
+  const doc = new jsPDF({ unit: 'mm', format: 'a4' });
+  const pw = 210, ph = 297, mx = 18, cw = pw - 2 * mx;
+  let y = 0;
+
+  function checkPage(need) { if (y + need > ph - 20) { doc.addPage(); y = 20; } }
+  function heading(text) { checkPage(14); doc.setFontSize(14); doc.setTextColor(30,30,30); doc.setFont('helvetica','bold'); doc.text(text, mx, y); y += 8; }
+  function subheading(text) { checkPage(10); doc.setFontSize(10); doc.setTextColor(180,130,40); doc.setFont('helvetica','bold'); doc.text(text, mx, y); y += 6; }
+  function body(text, indent) { 
+    const x = mx + (indent||0);
+    doc.setFontSize(9.5); doc.setTextColor(50,50,50); doc.setFont('helvetica','normal');
+    const lines = doc.splitTextToSize(text, cw - (indent||0));
+    checkPage(lines.length * 4.5 + 2);
+    doc.text(lines, x, y); y += lines.length * 4.5 + 1;
+  }
+  function label(l, v) {
+    checkPage(6); doc.setFontSize(9); doc.setTextColor(130,130,130); doc.setFont('helvetica','normal');
+    doc.text(l + ':', mx, y); doc.setTextColor(40,40,40); doc.setFont('helvetica','bold'); doc.text(v, mx + 32, y); y += 5.5;
+  }
+  function divider() { checkPage(6); doc.setDrawColor(220,220,220); doc.line(mx, y, pw - mx, y); y += 6; }
+  function source(text) { doc.setFontSize(7.5); doc.setTextColor(160,160,160); doc.setFont('helvetica','italic'); doc.text('Source: ' + text, mx, y); y += 5; }
+
+  // HEADER
+  doc.setFillColor(15,15,15); doc.rect(0, 0, pw, 52, 'F');
+  doc.setFillColor(212,146,42); doc.rect(0, 52, pw, 1.5, 'F');
+  doc.setFontSize(22); doc.setTextColor(255,255,255); doc.setFont('helvetica','bold');
+  doc.text('Meeting Brief', mx, 22);
+  doc.setFontSize(16); doc.setTextColor(212,146,42);
+  doc.text(account.name, mx, 32);
+  doc.setFontSize(9); doc.setTextColor(180,180,180); doc.setFont('helvetica','normal');
+  doc.text('Know Before You Go  |  SilverFort Sales Intelligence', mx, 42);
+  doc.text(new Date().toLocaleDateString('en-US', {weekday:'long', year:'numeric', month:'long', day:'numeric'}), mx, 48);
+  const mtLabel = meetingType.charAt(0).toUpperCase() + meetingType.slice(1) + ' Meeting';
+  doc.setTextColor(255,255,255); doc.setFont('helvetica','bold');
+  doc.text(mtLabel, pw - mx, 22, { align: 'right' });
+  doc.setFont('helvetica','normal'); doc.setTextColor(180,180,180);
+  doc.text('CONFIDENTIAL', pw - mx, 48, { align: 'right' });
+  y = 62;
+
+  // ACCOUNT SNAPSHOT
+  heading('Account Snapshot');
+  label('Company', account.name);
+  label('Industry', account.industry);
+  label('Size', account.size);
+  label('HQ', account.hq);
+  label('Deal Stage', account.dealStage);
+  label('Deal Size', account.dealSize);
+  label('Close Target', account.closeDate);
+  y += 2;
+  subheading('IDENTITY STACK');
+  const stackStr = account.identityStack.map(function(t) { return t.name + (t.legacy ? ' (legacy)' : ''); }).join('  |  ');
+  body(stackStr);
+  y += 2;
+  subheading('KEY STAKEHOLDERS');
+  label('Champion', account.champion.name + ' - ' + account.champion.title);
+  label('Econ. Buyer', account.buyer.name + ' - ' + account.buyer.title);
+  label('Tech Eval.', account.evaluator.name + ' - ' + account.evaluator.title);
+  source('Salesforce, ZoomInfo');
+  divider();
+
+  // USE CASES
+  heading('Prioritized Use Cases');
+  account.useCases.forEach(function(uc, i) {
+    checkPage(22);
+    subheading((i+1) + '. ' + uc.name);
+    body('Relevance: ' + uc.relevance, 4);
+    body('Evidence: ' + uc.proof, 4);
+    body('One-liner: "' + uc.oneLiner + '"', 4);
+    y += 2;
+  });
+  source('Atlassian (Jira, Confluence), Salesforce (similar deals)');
+  divider();
+
+  // COMPETITIVE INTEL
+  var comp = competitorOverride === 'auto' ? account.competitor : (competitorOverride === 'none' ? null : competitorOverride);
+  if (comp && competitiveData[comp]) {
+    var cd = competitiveData[comp];
+    heading('Competitive Intelligence: vs. ' + cd.name);
+    cd.comparison.forEach(function(row) {
+      checkPage(14);
+      subheading(row.dimension);
+      body('Silverfort: ' + row.sf, 4);
+      body(cd.name + ': ' + row.comp, 4);
+      y += 1;
+    });
+    checkPage(10);
+    subheading('KEY DIFFERENTIATOR');
+    body(cd.keyDiff);
+    y += 2;
+    subheading('OBJECTION HANDLING');
+    cd.objectionResponses.forEach(function(or) {
+      checkPage(14);
+      body('They say: "' + or.theyAsk + '"', 4);
+      body('You say: "' + or.youSay + '"', 4);
+      y += 2;
+    });
+    source('Atlassian (Jira, Confluence), Gong (winning patterns)');
+    divider();
+  }
+
+  // ANTICIPATED OBJECTIONS
+  heading('Anticipated Objections');
+  account.objections.forEach(function(obj) {
+    checkPage(16);
+    subheading('"' + obj.text + '"');
+    body('Why they raise this: ' + obj.why, 4);
+    body('Response: ' + obj.response, 4);
+    y += 2;
+  });
+  source('Gong, Atlassian (Jira, Confluence)');
+  divider();
+
+  // SUGGESTED AGENDA
+  heading('Suggested Agenda - ' + mtLabel);
+  var agenda = account.agendas[meetingType] || account.agendas.discovery;
+  agenda.forEach(function(item) {
+    checkPage(6);
+    doc.setFontSize(9.5); doc.setFont('helvetica','bold'); doc.setTextColor(212,146,42);
+    doc.text(item.time, mx, y);
+    doc.setFont('helvetica','normal'); doc.setTextColor(50,50,50);
+    doc.text(item.topic, mx + 22, y);
+    y += 5.5;
+  });
+  source('Gong (top-performing meeting structures)');
+
+  // FOOTER on every page
+  var pages = doc.internal.getNumberOfPages();
+  for (var i = 1; i <= pages; i++) {
+    doc.setPage(i);
+    doc.setFontSize(7.5); doc.setTextColor(160,160,160); doc.setFont('helvetica','normal');
+    doc.text('SilverFort Sales Intelligence - Know Before You Go', mx, ph - 8);
+    doc.text('Page ' + i + ' of ' + pages, pw - mx, ph - 8, { align: 'right' });
+    doc.setDrawColor(220,220,220); doc.line(mx, ph - 12, pw - mx, ph - 12);
+  }
+
+  doc.save('Meeting-Brief-' + account.name.replace(/\s+/g, '-') + '.pdf');
+}
+
+// ═══════════════════════════════════════════════
+// DASHBOARD CHARTS
+// ═══════════════════════════════════════════════
+function initDashboard() {
+  Chart.defaults.color = '#999999';
+  Chart.defaults.borderColor = '#222222';
+  Chart.defaults.font.family = 'Inter';
+
+  // Use Cases by Industry
+  new Chart(document.getElementById('useCaseChart'), {
+    type: 'bar',
+    data: {
+      labels: ['MFA for Legacy', 'Service Accounts', 'Zero Trust', 'OT Protection', 'Compliance'],
+      datasets: [
+        { label: 'Financial Services', data: [85, 72, 68, 30, 78], backgroundColor: '#D4922A' },
+        { label: 'Healthcare', data: [70, 45, 55, 60, 92], backgroundColor: '#00B894' },
+        { label: 'Manufacturing', data: [55, 88, 50, 95, 65], backgroundColor: '#F39C12' },
+        { label: 'Tech', data: [40, 65, 90, 25, 50], backgroundColor: '#9B59B6' }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+
+  // Win Rate Chart
+  new Chart(document.getElementById('winRateChart'), {
+    type: 'bar',
+    data: {
+      labels: ['Q1 2026', 'Q2 2026', 'Q3 2026 (proj)'],
+      datasets: [
+        { label: 'With Brief', data: [48, 55, 58], backgroundColor: '#00B894' },
+        { label: 'Without Brief', data: [40, 41, 41], backgroundColor: '#333333' }
+      ]
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } } },
+      scales: {
+        x: { grid: { display: false } },
+        y: { beginAtZero: true, max: 70, ticks: { callback: v => v + '%' } }
+      }
+    }
+  });
+
+  // Adoption Heatmap
+  const heatmapData = {
+    teams: ['US Enterprise', 'US Mid-Market', 'EMEA Sales', 'APAC'],
+    weeks: ['W1', 'W2', 'W3', 'W4', 'W5', 'W6', 'W7', 'W8'],
+    values: [
+      [35, 42, 55, 63, 71, 78, 82, 85],
+      [28, 38, 48, 55, 65, 72, 76, 80],
+      [22, 30, 40, 50, 58, 64, 70, 75],
+      [18, 25, 32, 40, 48, 55, 60, 65]
+    ]
+  };
+
+  const table = document.getElementById('heatmapTable');
+  let html = '<thead><tr><th>Team</th>';
+  heatmapData.weeks.forEach(w => html += `<th>${w}</th>`);
+  html += '</tr></thead><tbody>';
+  heatmapData.teams.forEach((team, ti) => {
+    html += `<tr><td>${team}</td>`;
+    heatmapData.values[ti].forEach(val => {
+      const hue = val > 70 ? '160' : val > 50 ? '45' : '0';
+      const sat = val > 70 ? '70%' : val > 50 ? '80%' : '70%';
+      const light = val > 70 ? '35%' : val > 50 ? '40%' : '40%';
+      const color = `hsl(${hue}, ${sat}, ${light})`;
+      html += `<td><span class="heatmap-cell" style="background:${color}">${val}%</span></td>`;
+    });
+    html += '</tr>';
+  });
+  html += '</tbody>';
+  table.innerHTML = html;
+}
+
+// ═══════════════════════════════════════════════
+// INIT
+// ═══════════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', () => {
+  initCarousel();
+  initDashboard();
+});
+</script>
+</body>
+</html>
