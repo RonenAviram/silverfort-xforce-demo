@@ -762,7 +762,7 @@ select, select:hover, select:focus {
 
 .brief-section-header .toggle {
   font-size: 18px;
-  color: var(--text-muted);
+  color: var(--accent-primary);
   transition: transform var(--transition);
 }
 
@@ -1241,6 +1241,10 @@ select, select:hover, select:focus {
   max-height: 280px;
 }
 
+@media (max-width: 768px) {
+  .chart-card canvas { max-height: 320px; }
+}
+
 /* Heatmap */
 .heatmap-card {
   background: var(--bg-surface);
@@ -1297,6 +1301,51 @@ select, select:hover, select:focus {
   font-size: 12px;
   font-weight: 600;
 }
+
+/* Heatmap mobile cards */
+.heatmap-mobile { display: none; }
+.heatmap-team-card {
+  background: var(--bg-elevated);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px;
+  margin-bottom: 12px;
+}
+.heatmap-team-card h5 {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.heatmap-team-card h5 span {
+  font-size: 12px;
+  color: var(--accent-success);
+  font-weight: 700;
+}
+.heatmap-bar-track {
+  width: 100%;
+  height: 8px;
+  background: var(--border);
+  border-radius: 4px;
+  margin-bottom: 6px;
+  overflow: hidden;
+}
+.heatmap-bar-fill {
+  height: 100%;
+  border-radius: 4px;
+  background: var(--accent-success);
+  transition: width 0.6s ease;
+}
+.heatmap-trend {
+  display: flex;
+  justify-content: space-between;
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.heatmap-trend span:last-child { color: var(--text-secondary); }
 
 /* ROI Summary */
 .roi-grid {
@@ -1596,8 +1645,8 @@ footer a {
    RESPONSIVE
    ═══════════════════════════════════════════════ */
 @media (max-width: 768px) {
-  .carousel-tabs { gap: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; }
-  .carousel-tab { font-size: 11px; padding: 8px 6px; flex: 0 0 auto; min-width: 0; }
+  .carousel-tabs { gap: 0; overflow-x: auto; -webkit-overflow-scrolling: touch; flex-wrap: nowrap; position: relative; mask-image: linear-gradient(to right, black 85%, transparent 100%); -webkit-mask-image: linear-gradient(to right, black 85%, transparent 100%); }
+  .carousel-tab { font-size: 11px; padding: 8px 8px; flex: 0 0 auto; min-width: 0; }
 
   .h1-subtitle { font-size: 0.6em; }
   .skip-to-demo { margin-bottom: 16px; font-size: 11px; padding: 6px 14px; }
@@ -1607,8 +1656,8 @@ footer a {
   .header-split { grid-template-columns: 1fr; gap: 16px; text-align: center; }
   .header-left { align-items: center; }
   .header-content { justify-content: center; }
-  .header-network { order: -1; margin: 0 auto; }
-  .header-network svg { max-width: 260px; max-height: 180px; margin: 0 auto; display: block; }
+  .header-network { margin: 0 auto; }
+  .header-network svg { max-width: 320px; max-height: 220px; margin: 0 auto; display: block; }
   #header { padding: 24px 0 20px; }
   .header-text h1 { font-size: 22px; }
   .header-tagline { font-size: 13px; padding: 10px 14px; text-align: left; }
@@ -1641,7 +1690,8 @@ footer a {
   .tech-stats .stat-num { font-size: 16px; }
   .enrichment-sources { gap: 8px; }
   .enrichment-source { padding: 6px 10px; font-size: 12px; }
-  .heatmap-table { display: block; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+  .heatmap-table { display: none; }
+  .heatmap-mobile { display: block; }
   .brief-section { padding: 16px; }
   .brief-section-header h3 { font-size: 14px; }
   .kpi-card { padding: 16px; }
@@ -1652,7 +1702,7 @@ footer a {
 
 @media (max-width: 480px) {
   .header-text h1 { font-size: 18px; }
-  .header-network svg { max-width: 200px; max-height: 140px; }
+  .header-network svg { max-width: 280px; max-height: 200px; }
   .header-text h1 { font-size: 18px; text-align: center; }
   .header-tagline { font-size: 12px; }
   .snapshot-grid { grid-template-columns: 1fr; }
@@ -1663,7 +1713,7 @@ footer a {
   .timeline-step::after { display: none; }
   .slide-card h3 { font-size: 20px; }
   .section-title { font-size: 20px; }
-  .carousel-tab { font-size: 10px; padding: 6px 4px; white-space: nowrap; }
+  .carousel-tab { font-size: 10px; padding: 6px 6px; white-space: nowrap; }
   .enrichment-source .source-name { font-size: 11px; }
   .comp-table th, .comp-table td { padding: 6px 4px; font-size: 11px; }
   .tech-tree { font-size: 10px; }
@@ -2218,6 +2268,7 @@ footer a {
     <div class="heatmap-card">
       <h4>Adoption Heatmap - Teams × Weeks</h4>
       <table class="heatmap-table" id="heatmapTable"></table>
+      <div class="heatmap-mobile" id="heatmapMobile"></div>
     </div>
 
 
@@ -3406,10 +3457,11 @@ function initDashboard() {
   Chart.defaults.font.family = 'Inter';
 
   // Use Cases by Industry
+  const isMobile = window.innerWidth <= 768;
   new Chart(document.getElementById('useCaseChart'), {
     type: 'bar',
     data: {
-      labels: ['MFA for Legacy', 'Service Accounts', 'Zero Trust', 'OT Protection', 'Compliance'],
+      labels: isMobile ? ['MFA', 'Svc Acct', 'Zero Trust', 'OT Prot', 'Compliance'] : ['MFA for Legacy', 'Service Accounts', 'Zero Trust', 'OT Protection', 'Compliance'],
       datasets: [
         { label: 'Financial Services', data: [85, 72, 68, 30, 78], backgroundColor: '#D4922A' },
         { label: 'Healthcare', data: [70, 45, 55, 60, 92], backgroundColor: '#00B894' },
@@ -3419,8 +3471,12 @@ function initDashboard() {
     },
     options: {
       responsive: true,
-      plugins: { legend: { position: 'bottom', labels: { padding: 16, usePointStyle: true, pointStyle: 'circle' } } },
-      scales: {
+      indexAxis: isMobile ? 'y' : 'x',
+      plugins: { legend: { position: 'bottom', labels: { padding: isMobile ? 10 : 16, usePointStyle: true, pointStyle: 'circle', font: { size: isMobile ? 11 : 12 } } } },
+      scales: isMobile ? {
+        x: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' }, stacked: true },
+        y: { grid: { display: false }, stacked: true }
+      } : {
         x: { grid: { display: false } },
         y: { beginAtZero: true, max: 100, ticks: { callback: v => v + '%' } }
       }
@@ -3476,6 +3532,23 @@ function initDashboard() {
   });
   html += '</tbody>';
   table.innerHTML = html;
+
+  // Mobile heatmap cards
+  const mobileContainer = document.getElementById('heatmapMobile');
+  if (mobileContainer) {
+    let mhtml = '';
+    heatmapData.teams.forEach((team, ti) => {
+      const vals = heatmapData.values[ti];
+      const latest = vals[vals.length - 1];
+      const first = vals[0];
+      mhtml += `<div class="heatmap-team-card">
+        <h5>${team} <span>${latest}%</span></h5>
+        <div class="heatmap-bar-track"><div class="heatmap-bar-fill" style="width:${latest}%"></div></div>
+        <div class="heatmap-trend"><span>W1: ${first}%</span><span>+${latest - first}% over 8 weeks</span></div>
+      </div>`;
+    });
+    mobileContainer.innerHTML = mhtml;
+  }
 }
 
 // ═══════════════════════════════════════════════
